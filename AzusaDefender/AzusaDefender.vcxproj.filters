@@ -13,15 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="主对话框">
+      <UniqueIdentifier>{ca44cb10-8430-4b73-8f33-e52de7271119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tab控件">
+      <UniqueIdentifier>{4533385e-7590-461d-b1d5-3e5d5cf36bfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DiaA">
+      <UniqueIdentifier>{48b103aa-bb89-43d0-a93e-ca5e89006ffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DiaB">
+      <UniqueIdentifier>{18f91ac8-2e8d-4f45-a64f-49bcfa1b865a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AzusaDefender.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="AzusaDefenderDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -33,16 +42,37 @@
     <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="AzusaDefenderDlg.h">
+      <Filter>主对话框</Filter>
+    </ClInclude>
+    <ClInclude Include="MyTabCtrl.h">
+      <Filter>Tab控件</Filter>
+    </ClInclude>
+    <ClInclude Include="DiaA.h">
+      <Filter>DiaA</Filter>
+    </ClInclude>
+    <ClInclude Include="DiaB.h">
+      <Filter>DiaB</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="AzusaDefenderDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AzusaDefenderDlg.cpp">
+      <Filter>主对话框</Filter>
+    </ClCompile>
+    <ClCompile Include="MyTabCtrl.cpp">
+      <Filter>Tab控件</Filter>
+    </ClCompile>
+    <ClCompile Include="DiaA.cpp">
+      <Filter>DiaA</Filter>
+    </ClCompile>
+    <ClCompile Include="DiaB.cpp">
+      <Filter>DiaB</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

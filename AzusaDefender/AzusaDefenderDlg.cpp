@@ -6,6 +6,8 @@
 #include "AzusaDefender.h"
 #include "AzusaDefenderDlg.h"
 #include "afxdialogex.h"
+#include "DiaA.h"
+#include "DiaB.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -30,6 +32,8 @@ public:
 // 实现
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+//	virtual BOOL OnInitDialog();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -58,6 +62,7 @@ CAzusaDefenderDlg::CAzusaDefenderDlg(CWnd* pParent /*=NULL*/)
 void CAzusaDefenderDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_TAB1, m_ctrlTab);
 }
 
 BEGIN_MESSAGE_MAP(CAzusaDefenderDlg, CDialogEx)
@@ -99,7 +104,28 @@ BOOL CAzusaDefenderDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-
+	m_ctrlTab.InsertItem(0, L"我的管家");
+	m_ctrlTab.InsertItem(1, L"任务管理器");
+	//m_ctrlTable.InsertItem(2, L"导入表");
+	//给子窗口指针赋值
+	m_ctrlTab.m_Dia[0] = new CDiaA();
+	m_ctrlTab.m_Dia[1] = new CDiaB();
+	//m_ctrlTable.m_Dia[2] = new CDiaImport();
+	//创建子窗口
+	m_ctrlTab.m_Dia[0]->Create(IDD_DIALOG1, &m_ctrlTab);
+	m_ctrlTab.m_Dia[1]->Create(IDD_DIALOG2, &m_ctrlTab);
+	//m_ctrlTable.m_Dia[2]->Create(IDD_IMPORT, &m_ctrlTable);
+	//控制子窗口的大小
+	CRect rc;
+	m_ctrlTab.GetClientRect(rc);
+	rc.DeflateRect(2, 23, 2, 2);
+	m_ctrlTab.m_Dia[0]->MoveWindow(rc);
+	m_ctrlTab.m_Dia[1]->MoveWindow(rc);
+	//m_ctrlTable.m_Dia[2]->MoveWindow(rc);
+	//显示第一个窗口
+	m_ctrlTab.m_Dia[0]->ShowWindow(SW_SHOW);
+	m_ctrlTab.m_Dia[1]->ShowWindow(SW_HIDE);
+	//m_ctrlTable.m_Dia[2]->ShowWindow(SW_HIDE);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -151,4 +177,3 @@ HCURSOR CAzusaDefenderDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
-

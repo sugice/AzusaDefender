@@ -188,6 +188,9 @@
   <ItemGroup>
     <ClInclude Include="AzusaDefender.h" />
     <ClInclude Include="AzusaDefenderDlg.h" />
+    <ClInclude Include="DiaA.h" />
+    <ClInclude Include="DiaB.h" />
+    <ClInclude Include="MyTabCtrl.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -195,6 +198,9 @@
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp" />
     <ClCompile Include="AzusaDefenderDlg.cpp" />
+    <ClCompile Include="DiaA.cpp" />
+    <ClCompile Include="DiaB.cpp" />
+    <ClCompile Include="MyTabCtrl.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
