@@ -31,6 +31,12 @@
     <Filter Include="服务">
       <UniqueIdentifier>{8f176f64-44f3-4b5a-985c-61b0e401983e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="计算文件MD5值">
+      <UniqueIdentifier>{fe57862f-aea5-41bb-8d7c-8e25ebe051a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DiaD">
+      <UniqueIdentifier>{9167371f-bce2-4c0f-b933-8e0d4e4c7e29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -69,6 +75,12 @@
     <ClInclude Include="DiaC.h">
       <Filter>服务</Filter>
     </ClInclude>
+    <ClInclude Include="MD5.h">
+      <Filter>计算文件MD5值</Filter>
+    </ClInclude>
+    <ClInclude Include="DiaD.h">
+      <Filter>DiaD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp">
@@ -97,6 +109,12 @@
     </ClCompile>
     <ClCompile Include="DiaC.cpp">
       <Filter>服务</Filter>
+    </ClCompile>
+    <ClCompile Include="MD5.cpp">
+      <Filter>计算文件MD5值</Filter>
+    </ClCompile>
+    <ClCompile Include="DiaD.cpp">
+      <Filter>DiaD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

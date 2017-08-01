@@ -11,7 +11,7 @@ public:
 	CMyTabCtrl();
 	virtual ~CMyTabCtrl();
 
-	CDialogEx* m_Dia[3];
+	CDialogEx* m_Dia[4];
 protected:
 	DECLARE_MESSAGE_MAP()
 public:

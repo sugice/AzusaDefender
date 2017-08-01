@@ -191,7 +191,9 @@
     <ClInclude Include="DiaA.h" />
     <ClInclude Include="DiaB.h" />
     <ClInclude Include="DiaC.h" />
+    <ClInclude Include="DiaD.h" />
     <ClInclude Include="DiaVs.h" />
+    <ClInclude Include="MD5.h" />
     <ClInclude Include="MyListBox.h" />
     <ClInclude Include="MyTabCtrl.h" />
     <ClInclude Include="Resource.h" />
@@ -204,7 +206,9 @@
     <ClCompile Include="DiaA.cpp" />
     <ClCompile Include="DiaB.cpp" />
     <ClCompile Include="DiaC.cpp" />
+    <ClCompile Include="DiaD.cpp" />
     <ClCompile Include="DiaVs.cpp" />
+    <ClCompile Include="MD5.cpp" />
     <ClCompile Include="MyListBox.cpp" />
     <ClCompile Include="MyTabCtrl.cpp" />
     <ClCompile Include="stdafx.cpp">

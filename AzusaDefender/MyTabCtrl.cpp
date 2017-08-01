@@ -39,6 +39,7 @@ void CMyTabCtrl::OnTcnSelchange(NMHDR *pNMHDR, LRESULT *pResult)
 		m_Dia[0]->ShowWindow(SW_SHOW);
 		m_Dia[1]->ShowWindow(SW_HIDE);
 		m_Dia[2]->ShowWindow(SW_HIDE);
+		m_Dia[3]->ShowWindow(SW_HIDE);
 	}
 	break;
 	case 1:
@@ -46,6 +47,7 @@ void CMyTabCtrl::OnTcnSelchange(NMHDR *pNMHDR, LRESULT *pResult)
 		m_Dia[0]->ShowWindow(SW_HIDE);
 		m_Dia[1]->ShowWindow(SW_SHOW);
 		m_Dia[2]->ShowWindow(SW_HIDE);
+		m_Dia[3]->ShowWindow(SW_HIDE);
 	}
 	break;
 	case 2:
@@ -53,6 +55,15 @@ void CMyTabCtrl::OnTcnSelchange(NMHDR *pNMHDR, LRESULT *pResult)
 		m_Dia[0]->ShowWindow(SW_HIDE);
 		m_Dia[1]->ShowWindow(SW_HIDE);
 		m_Dia[2]->ShowWindow(SW_SHOW);
+		m_Dia[3]->ShowWindow(SW_HIDE);
+	}
+	break;
+	case 3:
+	{
+		m_Dia[0]->ShowWindow(SW_HIDE);
+		m_Dia[1]->ShowWindow(SW_HIDE);
+		m_Dia[2]->ShowWindow(SW_HIDE);
+		m_Dia[3]->ShowWindow(SW_SHOW);
 	}
 	break;
 	default:
