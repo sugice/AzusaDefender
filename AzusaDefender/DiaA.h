@@ -51,4 +51,5 @@ public:
 	BOOL m_isCheck;
 	BOOL m_isCheck2;
 	BOOL m_isCheck3;
+	afx_msg void OnBnClickedButton4();
 };

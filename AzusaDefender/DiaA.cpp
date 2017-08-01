@@ -49,6 +49,7 @@ BEGIN_MESSAGE_MAP(CDiaA, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CDiaA::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CDiaA::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CDiaA::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CDiaA::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -325,4 +326,16 @@ CString CDiaA::ByteConversionGBMBKB(__int64 KSize)
 		strObj.Format(_T("%0.1d"), KSize);
 		return strObj + _T("Byte");//显示Byte值
 	}
+}
+
+
+void CDiaA::OnBnClickedButton4()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	for (DWORD i = 0; i < m_vecFile.size(); i++)
+	{
+		DeleteFile(m_vecFile[i].GetBuffer());
+		m_ctrlListBox.DeleteString(0);
+	}
+	m_vecFile.swap(vector<CString>());
 }
