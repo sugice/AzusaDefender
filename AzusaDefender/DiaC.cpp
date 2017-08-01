@@ -32,6 +32,8 @@ void CDiaC::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CDiaC, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CDiaC::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON3, &CDiaC::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON2, &CDiaC::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -70,8 +72,82 @@ void CDiaC::OnBnClickedButton1()
 		}
 	}
 	CString strState;
+	CString strName;
 	strState = m_ctrlList.GetItemText(dwItem, 1);
+	strName = m_ctrlList.GetItemText(dwItem, 0);
+	if (strState==L"正在运行")
+	{
+		AfxMessageBox(L"服务正在运行，无需启动");
+	}
+	else
+	{
+		//打开计算机服务控制管理器
+		SC_HANDLE hSvc = OpenSCManagerW(NULL, NULL, SC_MANAGER_ALL_ACCESS);
+		SC_HANDLE hSC = OpenService(hSvc, strName, SERVICE_QUERY_CONFIG| SERVICE_START);
+		// 启动服务  
+		if (::StartService(hSC, NULL, NULL) == FALSE)
+		{
+			AfxMessageBox(L"启动服务失败");
+			::CloseServiceHandle(hSvc);
+			::CloseServiceHandle(hSC);
+			return;
+		}
+		AfxMessageBox(L"启动服务成功");
+		::CloseServiceHandle(hSvc);
+		::CloseServiceHandle(hSC);
+		//刷新服务列表
+		m_vecServiceInfo.clear();//清空保存的服务信息
+		enumService();
+		InsertServiceList();
+	}
 }
+
+//停止服务
+void CDiaC::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	DWORD dwItem;
+	for (int i = 0; i < m_ctrlList.GetItemCount(); i++)
+	{
+		if (m_ctrlList.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+		{
+			dwItem = i;
+			break;
+		}
+	}
+	CString strState;
+	CString strName;
+	strState = m_ctrlList.GetItemText(dwItem, 1);
+	strName = m_ctrlList.GetItemText(dwItem, 0);
+	if (strState == L"已停止")
+	{
+		AfxMessageBox(L"服务为停止状态，无需停止");
+	}
+	else
+	{
+		//打开计算机服务控制管理器
+		SC_HANDLE hSvc = OpenSCManagerW(NULL, NULL, SC_MANAGER_ALL_ACCESS);
+		SC_HANDLE hSC = OpenService(hSvc, strName, SERVICE_QUERY_CONFIG | SERVICE_STOP);
+		// 停止服务 
+		SERVICE_STATUS status;
+		if (::ControlService(hSC,
+			SERVICE_CONTROL_STOP, &status) == FALSE)
+		{
+			AfxMessageBox(L"停止服务失败");
+			::CloseServiceHandle(hSvc);
+			::CloseServiceHandle(hSC);
+			return;
+		}
+		AfxMessageBox(L"停止服务成功");
+		::CloseServiceHandle(hSvc);
+		::CloseServiceHandle(hSC);
+		//刷新服务列表
+		m_vecServiceInfo.clear();//清空保存的服务信息
+		enumService();
+		InsertServiceList();
+	}
+}
+
 
 // 逻辑实现部分
 
@@ -203,5 +279,18 @@ BOOL CDiaC::InsertServiceList()
 	}
 	return TRUE;
 }
+
+
+
+
+void CDiaC::OnBnClickedButton3()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	//枚举服务
+	m_vecServiceInfo.clear();//清空保存的服务信息
+	enumService();
+	InsertServiceList();
+}
+
 
 
