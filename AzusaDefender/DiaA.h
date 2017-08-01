@@ -46,4 +46,9 @@ public:
 	afx_msg void OnBnClickedButton3();
 	void TraverseFile(TCHAR szPath[MAX_PATH], vector<CString> &vecPath);
 	CString ByteConversionGBMBKB(__int64 KSize);
+	CStatic m_ctrlStatic3;
+	CStatic m_ctrlStatic4;
+	BOOL m_isCheck;
+	BOOL m_isCheck2;
+	BOOL m_isCheck3;
 };

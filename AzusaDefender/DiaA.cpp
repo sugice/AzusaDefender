@@ -18,6 +18,9 @@ CDiaA::CDiaA(CWnd* pParent /*=NULL*/)
 	, m_boolCheck(FALSE)
 	, m_boolCheck2(FALSE)
 	, m_boolCheck3(FALSE)
+	, m_isCheck(FALSE)
+	, m_isCheck2(FALSE)
+	, m_isCheck3(FALSE)
 {
 
 }
@@ -37,6 +40,8 @@ void CDiaA::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK2, m_boolCheck2);
 	DDX_Check(pDX, IDC_CHECK3, m_boolCheck3);
 	DDX_Control(pDX, IDC_LIST1, m_ctrlListBox);
+	DDX_Control(pDX, IDC_STATIC3, m_ctrlStatic3);
+	DDX_Control(pDX, IDC_STATIC4, m_ctrlStatic4);
 }
 
 
@@ -204,30 +209,39 @@ void CDiaA::OnBnClickedButton3()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if (m_boolCheck)
+
+	if (m_boolCheck && !m_isCheck)
 	{
+		m_isCheck = TRUE;
 		SHQUERYRBINFO RecycleBininfo = {};
 		RecycleBininfo.cbSize = sizeof(RecycleBininfo);
 		SHQueryRecycleBin(NULL, &RecycleBininfo);
 		CString cstrSize =ByteConversionGBMBKB(RecycleBininfo.i64Size);
 		CString cstrNumItems;
 		cstrNumItems.Format(_T("%d"), RecycleBininfo.i64NumItems);
-		//m_ctrlStatic5.SetWindowTextW(cstrSize);
-		//m_ctrlStatic6.SetWindowTextW(cstrNumItems);
+		m_ctrlStatic3.SetWindowTextW(cstrSize);
+		m_ctrlStatic4.SetWindowTextW(cstrNumItems);
+		m_ctrlStatic3.ShowWindow(TRUE);
+		m_ctrlStatic4.ShowWindow(TRUE);
 	}
-	if (m_boolCheck2)//系统垃圾路径
+	if (m_boolCheck2 && !m_isCheck2)//系统垃圾路径
 	{
+		m_isCheck2 = TRUE;
 		m_vecPath.push_back(_T("C:\\Windows\\Temp"));
 		m_vecPath.push_back(_T("C:\\Users\\aimomo\\AppData\\Local\\Temp"));
 		m_vecPath.push_back(_T("C:\\Users\\aimomo\\AppData\\Local\\Microsoft\\Windows\\WER\\ReportQueue"));
 	}
-	if (m_boolCheck3)//浏览器垃圾路径
+	if (m_boolCheck3 && !m_isCheck3)//浏览器垃圾路径
 	{
+		m_isCheck3 = TRUE;
 		m_vecPath.push_back(_T("C:\\Users\\aimomo\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache"));
 		m_vecPath.push_back(_T("C:\\Users\\aimomo\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\GPUCache"));
 		m_vecPath.push_back(_T("C:\\Users\\aimomo\\AppData\\Local\\Google\\Chrome\\User Data\\ShaderCache\\GPUCache"));
 		m_vecPath.push_back(_T("C:\\Users\\aimomo\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\JumpListIcons"));
 	}
+	//遍历之前先清空之前遍历的文件信息和列表框内容
+	m_vecFile.clear();
+	m_ctrlListBox.ResetContent();
 	for (auto vecPathObj : m_vecPath)//遍历
 	{
 		TraverseFile(vecPathObj.GetBuffer(), m_vecFile);
@@ -293,22 +307,22 @@ CString CDiaA::ByteConversionGBMBKB(__int64 KSize)
 	CString strObj;
 	if (KSize / GB >= 1)//如果当前Byte的值大于等于1GB
 	{
-		strObj.Format(_T("%0.2f"), round(KSize / (float)GB));
+		strObj.Format(_T("%0.1f"), round(KSize / (float)GB));
 		return strObj + _T("GB");//将其转换成GB
 	}
 	else if (KSize / MB >= 1)//如果当前Byte的值大于等于1MB
 	{
-		strObj.Format(_T("%0.2f"), round(KSize / (float)MB));
+		strObj.Format(_T("%0.1f"), round(KSize / (float)MB));
 		return strObj + _T("MB");//将其转换成MB
 	}
 	else if (KSize / KB >= 1)//如果当前Byte的值大于等于1KB
 	{
-		strObj.Format(_T("%0.2f"), round(KSize / (float)KB));
+		strObj.Format(_T("%0.1f"), round(KSize / (float)KB));
 		return strObj + _T("KB");//将其转换成KB
 	}
 	else
 	{
-		strObj.Format(_T("%d"), KSize);
+		strObj.Format(_T("%0.1d"), KSize);
 		return strObj + _T("Byte");//显示Byte值
 	}
 }
