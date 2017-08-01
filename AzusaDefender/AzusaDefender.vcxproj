@@ -190,6 +190,7 @@
     <ClInclude Include="AzusaDefenderDlg.h" />
     <ClInclude Include="DiaA.h" />
     <ClInclude Include="DiaB.h" />
+    <ClInclude Include="DiaC.h" />
     <ClInclude Include="DiaVs.h" />
     <ClInclude Include="MyListBox.h" />
     <ClInclude Include="MyTabCtrl.h" />
@@ -202,6 +203,7 @@
     <ClCompile Include="AzusaDefenderDlg.cpp" />
     <ClCompile Include="DiaA.cpp" />
     <ClCompile Include="DiaB.cpp" />
+    <ClCompile Include="DiaC.cpp" />
     <ClCompile Include="DiaVs.cpp" />
     <ClCompile Include="MyListBox.cpp" />
     <ClCompile Include="MyTabCtrl.cpp" />

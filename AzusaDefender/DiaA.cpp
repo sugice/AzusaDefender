@@ -154,8 +154,7 @@ BOOL CDiaA::ClearUpMem()
 }
 
 
-
-
+//清理内存
 void CDiaA::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
@@ -168,11 +167,13 @@ void CDiaA::OnBnClickedButton1()
 	m_ctrlStatic2.SetWindowTextW(strStatic2);
 }
 
+//创建线程
 void CDiaA::CreateMonitorThread()
 {
 	CreateThread(NULL, NULL, MonitorThread, (LPVOID)this, NULL, NULL);
 }
 
+//线程回调函数，用来实时监测CPU和内存状态
 DWORD WINAPI CDiaA::MonitorThread(LPVOID lpParam)
 {
 	CDiaA *pThis = (CDiaA*)lpParam;
@@ -196,7 +197,7 @@ DWORD WINAPI CDiaA::MonitorThread(LPVOID lpParam)
 	}
 }
 
-
+//弹出VS工程清理工具对话框
 void CDiaA::OnBnClickedButton2()
 {
 	// TODO: 在此添加控件通知处理程序代码
@@ -205,7 +206,7 @@ void CDiaA::OnBnClickedButton2()
 	diaVs->ShowWindow(SW_SHOW);
 }
 
-
+//响应开始遍历垃圾按钮
 void CDiaA::OnBnClickedButton3()
 {
 	// TODO: 在此添加控件通知处理程序代码
@@ -328,7 +329,7 @@ CString CDiaA::ByteConversionGBMBKB(__int64 KSize)
 	}
 }
 
-
+//删除遍历到的文件
 void CDiaA::OnBnClickedButton4()
 {
 	// TODO: 在此添加控件通知处理程序代码

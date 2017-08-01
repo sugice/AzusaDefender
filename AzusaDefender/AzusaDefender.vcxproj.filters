@@ -28,6 +28,9 @@
     <Filter Include="vs工程清理">
       <UniqueIdentifier>{acaf01a1-85b5-4bf5-b53b-f3a60feca496}</UniqueIdentifier>
     </Filter>
+    <Filter Include="服务">
+      <UniqueIdentifier>{8f176f64-44f3-4b5a-985c-61b0e401983e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -63,6 +66,9 @@
     <ClInclude Include="MyListBox.h">
       <Filter>vs工程清理</Filter>
     </ClInclude>
+    <ClInclude Include="DiaC.h">
+      <Filter>服务</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp">
@@ -88,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="MyListBox.cpp">
       <Filter>vs工程清理</Filter>
+    </ClCompile>
+    <ClCompile Include="DiaC.cpp">
+      <Filter>服务</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
