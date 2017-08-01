@@ -190,6 +190,8 @@
     <ClInclude Include="AzusaDefenderDlg.h" />
     <ClInclude Include="DiaA.h" />
     <ClInclude Include="DiaB.h" />
+    <ClInclude Include="DiaVs.h" />
+    <ClInclude Include="MyListBox.h" />
     <ClInclude Include="MyTabCtrl.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -200,6 +202,8 @@
     <ClCompile Include="AzusaDefenderDlg.cpp" />
     <ClCompile Include="DiaA.cpp" />
     <ClCompile Include="DiaB.cpp" />
+    <ClCompile Include="DiaVs.cpp" />
+    <ClCompile Include="MyListBox.cpp" />
     <ClCompile Include="MyTabCtrl.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

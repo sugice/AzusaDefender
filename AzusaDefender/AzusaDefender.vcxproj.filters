@@ -25,6 +25,9 @@
     <Filter Include="DiaB">
       <UniqueIdentifier>{18f91ac8-2e8d-4f45-a64f-49bcfa1b865a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vs工程清理">
+      <UniqueIdentifier>{acaf01a1-85b5-4bf5-b53b-f3a60feca496}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -54,6 +57,12 @@
     <ClInclude Include="DiaB.h">
       <Filter>DiaB</Filter>
     </ClInclude>
+    <ClInclude Include="DiaVs.h">
+      <Filter>vs工程清理</Filter>
+    </ClInclude>
+    <ClInclude Include="MyListBox.h">
+      <Filter>vs工程清理</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp">
@@ -73,6 +82,12 @@
     </ClCompile>
     <ClCompile Include="DiaB.cpp">
       <Filter>DiaB</Filter>
+    </ClCompile>
+    <ClCompile Include="DiaVs.cpp">
+      <Filter>vs工程清理</Filter>
+    </ClCompile>
+    <ClCompile Include="MyListBox.cpp">
+      <Filter>vs工程清理</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

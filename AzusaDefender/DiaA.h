@@ -1,6 +1,8 @@
 #pragma once
 #include "afxcmn.h"
 #include "afxwin.h"
+#include <vector>
+using std::vector;
 
 
 // CDiaA ¶Ô»°¿ò
@@ -34,4 +36,14 @@ public:
 	afx_msg void OnBnClickedButton1();
 	void CreateMonitorThread();
 	static DWORD WINAPI MonitorThread(LPVOID lpParam);
+	afx_msg void OnBnClickedButton2();
+	BOOL m_boolCheck;
+	BOOL m_boolCheck2;
+	BOOL m_boolCheck3;
+	vector<CString> m_vecPath;
+	vector<CString> m_vecFile;
+	CListBox m_ctrlListBox;
+	afx_msg void OnBnClickedButton3();
+	void TraverseFile(TCHAR szPath[MAX_PATH], vector<CString> &vecPath);
+	CString ByteConversionGBMBKB(__int64 KSize);
 };
