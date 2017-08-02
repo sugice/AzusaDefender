@@ -52,6 +52,7 @@ void CLordPe::GetBasicInfo(CString& filePath)
 	pFileHdr = &(pNtHdr->FileHeader);
 	pOptHdr = &(pNtHdr->OptionalHeader);
 	
+	ZeroMemory(&m_basicInfo, sizeof(m_basicInfo));
 	//文件头内的信息
 	m_basicInfo.NumberOfSections = pFileHdr->NumberOfSections;
 	m_basicInfo.SizeOfOptionalHeader = pFileHdr->SizeOfOptionalHeader;
@@ -72,6 +73,7 @@ void CLordPe::GetBasicInfo(CString& filePath)
 
 	PIMAGE_DATA_DIRECTORY pDataDirectory = pOptHdr->DataDirectory;
 	DWORD i = 0;
+	m_vecDataTable.clear();
 	while (i < pOptHdr->NumberOfRvaAndSizes)
 	{
 		DataTableOfContents dataTableObj = { 0 };
@@ -83,7 +85,7 @@ void CLordPe::GetBasicInfo(CString& filePath)
 
 	IMAGE_SECTION_HEADER* pScnHdr = NULL;
 	pScnHdr = IMAGE_FIRST_SECTION(pNtHdr);
-
+	m_vecSectionTable.clear();
 	for (int i = 0; i < pFileHdr->NumberOfSections; ++i)
 	{
 		SectionTable sectionTable = { 0 };
