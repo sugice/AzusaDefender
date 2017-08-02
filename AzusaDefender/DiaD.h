@@ -25,6 +25,7 @@ protected:
 	void TraverseFile(TCHAR szPath[MAX_PATH], vector<CString> &vecPath);
 	void CalculateMD5();
 	void GetVirusInfo();
+	CString ByteConversionGBMBKB(__int64 KSize);
 	vector<CString> m_vecFile;
 	vector<CStringA> m_vecMD5Save;
 	vector<CString> m_vecVirus;
@@ -34,4 +35,6 @@ public:
 	afx_msg void OnBnClickedButton1();
 	CListCtrl m_ctrlList;
 	virtual BOOL OnInitDialog();
+//	afx_msg void OnHdnItemchangedList1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedButton2();
 };

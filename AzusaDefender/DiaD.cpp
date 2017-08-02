@@ -43,6 +43,7 @@ void CDiaD::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CDiaD, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CDiaD::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CDiaD::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -52,7 +53,7 @@ BOOL CDiaD::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 	// 初始化list信息
-	m_ctrlList.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
+	m_ctrlList.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES);
 	TCHAR *szCol[5] = { L"文件路径", L"创建时间", L"修改时间", L"文件大小", L"MD5值"};
 	for (int i = 0; i < 5; ++i)
 	{
@@ -63,13 +64,29 @@ BOOL CDiaD::OnInitDialog()
 }
 
 // CDiaD 消息处理程序
+//查毒
 void CDiaD::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	TraverseFile(L"D://Test", m_vecFile);
 	CalculateMD5();
+	GetVirusInfo();
 }
 
+//杀毒
+void CDiaD::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	for (int i = 0; i < m_ctrlList.GetItemCount(); i++)
+	{
+		if (m_ctrlList.GetCheck(i)) //这个是前面的checkbox被选中
+		{
+			CString deFile = m_ctrlList.GetItemText(i, 0);
+			DeleteFile(deFile.GetBuffer());
+			m_ctrlList.DeleteItem(i);
+		}
+	}
+}
 
 // 逻辑代码部分
 //遍历测试文件夹
@@ -118,11 +135,6 @@ void CDiaD::CalculateMD5()
 	CMD5 md5;
 	CHAR strFilePath[MAX_PATH] = { 0 };
 	CStringA cstrMD5;
-	//打开保存着MD5的文件
-	//HANDLE hFile = CreateFile(L"MD5.txt", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	//CHAR ch[100] = {};
-	//DWORD dwReads;
-	//ReadFile(hFile, ch, 100, &dwReads, NULL);
 	string buf;
 	CStringA strObj;
 	ifstream infile;
@@ -155,18 +167,70 @@ void CDiaD::CalculateMD5()
 	}
 }
 
+//获取病毒信息
 void CDiaD::GetVirusInfo()
 {
-	WIN32_FIND_DATA stcData = { 0 };
+	m_ctrlList.DeleteAllItems();
+	DWORD i = 0;//索引
 	for (auto vecVirusFile : m_vecVirus)
 	{
+		WIN32_FIND_DATA stcData = { 0 };
 		HANDLE hFind = FindFirstFile(vecVirusFile, &stcData);
 		if (hFind == INVALID_HANDLE_VALUE)
 		{
 			return;
 		}
+		SYSTEMTIME syCreationTime = { 0 };
+		SYSTEMTIME syWriteTime = { 0 };
+		FileTimeToSystemTime(&(stcData.ftCreationTime), &syCreationTime);
+		FileTimeToSystemTime(&(stcData.ftLastWriteTime), &syWriteTime);
+		__int64 fileSizeByte = (stcData.nFileSizeHigh *(MAXDWORD + 1)) + stcData.nFileSizeLow;
+		CString strCreationTime,strWriteTime;
+		//文件创建时间
+		strCreationTime.Format(L"%d/%d/%d %d:%d", syCreationTime.wYear, syCreationTime.wMonth, 
+								syCreationTime.wDay, syCreationTime.wHour, syCreationTime.wMinute);
+		//文件修改时间
+		strWriteTime.Format(L"%d/%d/%d %d:%d", syWriteTime.wYear, syWriteTime.wMonth,
+			syWriteTime.wDay, syWriteTime.wHour, syWriteTime.wMinute);
+		//文件大小
+		CString strFileSize = ByteConversionGBMBKB(fileSizeByte);
+		//L"文件路径", L"创建时间", L"修改时间", L"文件大小", L"MD5值"
+		m_ctrlList.InsertItem(i, vecVirusFile);
+		m_ctrlList.SetItemText(i, 1, strCreationTime);
+		m_ctrlList.SetItemText(i, 2, strWriteTime);
+		m_ctrlList.SetItemText(i, 3, strFileSize);
+		WCHAR virusMD5[33] = {0};
+		CHAR_TO_WCHAR(m_vecVirusMD5[i].GetBuffer(),virusMD5);
+		m_ctrlList.SetItemText(i, 4, virusMD5);
 
 	}
 }
 
-
+//字节转KB、MB、GB
+CString CDiaD::ByteConversionGBMBKB(__int64 KSize)
+{
+	const int GB = 1024 * 1024 * 1024;//定义GB的计算常量
+	const int MB = 1024 * 1024;//定义MB的计算常量
+	const int KB = 1024;//定义KB的计算常量
+	CString strObj;
+	if (KSize / GB >= 1)//如果当前Byte的值大于等于1GB
+	{
+		strObj.Format(_T("%0.1f"), round(KSize / (float)GB));
+		return strObj + _T("GB");//将其转换成GB
+	}
+	else if (KSize / MB >= 1)//如果当前Byte的值大于等于1MB
+	{
+		strObj.Format(_T("%0.1f"), round(KSize / (float)MB));
+		return strObj + _T("MB");//将其转换成MB
+	}
+	else if (KSize / KB >= 1)//如果当前Byte的值大于等于1KB
+	{
+		strObj.Format(_T("%0.1f"), round(KSize / (float)KB));
+		return strObj + _T("KB");//将其转换成KB
+	}
+	else
+	{
+		strObj.Format(_T("%0.1d"), KSize);
+		return strObj + _T("Byte");//显示Byte值
+	}
+}
