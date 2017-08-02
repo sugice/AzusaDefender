@@ -58,4 +58,7 @@ public:
 	vector<MY_PROCESSINFO> m_vecEvilProcess;
 	void ReadWBList();
 	void GetEvilProcessInfo();
+	afx_msg void OnBnClickedButton2();
+	BOOL KillProcess(DWORD dwPid);
+	afx_msg void OnBnClickedButton3();
 };

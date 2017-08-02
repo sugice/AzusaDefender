@@ -47,6 +47,8 @@ void CDiaB::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CDiaB, CDialogEx)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, &CDiaB::OnNMDblclkList1)
 	ON_BN_CLICKED(IDC_BUTTON1, &CDiaB::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CDiaB::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CDiaB::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 BOOL CDiaB::OnInitDialog()
@@ -354,6 +356,8 @@ void CDiaB::OnBnClickedButton1()
 //将黑白名单的信息读取到响应vector中
 void CDiaB::ReadWBList()
 {
+	m_vecWhitelist.clear();
+	m_vecBlacklist.clear();
 	//读取保存着白名单的文件信息
 	string buf;
 	CStringA strObj;
@@ -401,6 +405,8 @@ void CDiaB::GetEvilProcessInfo()
 {
 	//读黑白名单信息
 	ReadWBList();
+	//清空保存恶意进程信息的vector
+	m_vecEvilProcess.clear();
 	//比对进程名
 	CString strProName;
 	for (auto vecProcess : m_vecProcess)//所有进程信息
@@ -443,3 +449,43 @@ void CDiaB::GetEvilProcessInfo()
 	}
 }
 
+
+
+void CDiaB::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	for (auto vecEvilProcess : m_vecEvilProcess)
+	{
+		KillProcess(vecEvilProcess.dwPid);
+	}
+	m_ctrlList.DeleteAllItems();
+	AfxMessageBox(_T("成功终止恶意进程"));
+}
+
+BOOL CDiaB::KillProcess(DWORD dwPid)
+{
+	HANDLE hPrc;
+
+	if (0 == dwPid) return FALSE;
+
+	hPrc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPid);  // Opens handle to the process.  
+
+	if (!TerminateProcess(hPrc, 0)) // Terminates a process.  
+	{
+		CloseHandle(hPrc);
+		return FALSE;
+	}
+	else
+		WaitForSingleObject(hPrc, 2000); // At most ,waite 2000  millisecond.  
+
+	CloseHandle(hPrc);
+	return TRUE;
+}
+
+//刷新进程
+void CDiaB::OnBnClickedButton3()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	EnumProcess();
+	InsertProcessList(m_vecProcess);
+}
