@@ -6,6 +6,7 @@
 #include "DiaPe.h"
 #include "LordPe.h"
 #include "afxdialogex.h"
+#include "ExportTable.h"
 
 // CDiaPe 对话框
 
@@ -63,6 +64,7 @@ void CDiaPe::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CDiaPe, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CDiaPe::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CDiaPe::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -176,3 +178,12 @@ void CDiaPe::UpdateDataToEdits()
 }
 
 
+
+
+void CDiaPe::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CExportTable* exportTable = new CExportTable;
+	exportTable->Create(IDD_DIALOG7, this);
+	exportTable->ShowWindow(SW_SHOW);
+}

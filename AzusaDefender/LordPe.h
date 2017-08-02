@@ -54,11 +54,15 @@ typedef struct _MY_IM_EX_DI
 	DWORD AddressOfNameOrdinals;//序号表RVA
 }MY_IM_EX_DI,*PMY_IM_EX_DI;
 
-//导出表中有函数名的函数信息
-typedef struct _EXPORTFUN
+//导出表函数信息
+typedef struct _EXPORTFUNINFO
 {
+	DWORD ExportOrdinals;//导出序号
+	DWORD FunctionRVA;//函数RVA
+	DWORD FunctionOffset;//函数文件偏移
+	CString FunctionName;//函数名
+}EXPORTFUNINFO,*PEXPORTFUNINFO;
 
-}EXPORTFUN,*PEXPORTFUN;
 class CLordPe
 {
 public:
@@ -73,6 +77,7 @@ public:
 	BASICINFO m_basicInfo;//头文件中的基础信息
 	vector<DataTableOfContents> m_vecDataTable;//数据目录表
 	vector<SectionTable> m_vecSectionTable;//区段表
+	vector<EXPORTFUNINFO> m_vecExportFunInfo;
 	MY_IM_EX_DI m_my_im_ex_di;
 };
 

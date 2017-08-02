@@ -100,6 +100,7 @@ void CLordPe::GetBasicInfo(CString& filePath)
 	}
 }
 
+//解析导出表
 void CLordPe::ExportTable()
 {
 	// 5. 找到导出表
@@ -156,10 +157,12 @@ void CLordPe::ExportTable()
 		(DWORD*)(dwExpOrdTabOfs + (DWORD)m_pDosHdr);
 
 	// 遍历所有的函数地址
+	m_vecExportFunInfo.clear();
 	for (int i = 0; i< pExpTab->NumberOfFunctions; ++i)
 	{
-		printf("函数地址(RVA):[%08X]\n", pExpAddr[i]);
-
+		EXPORTFUNINFO exportFunInfo = {0};
+		exportFunInfo.FunctionRVA = pExpAddr[i];//函数RVA
+		exportFunInfo.FunctionOffset = RVAToOffset(m_pDosHdr, pExpAddr[i]);//函数相对文件偏移
 		// 查找当前遍历到的地址有没有名称
 		int j = 0;
 		for (; j < pExpTab->NumberOfNames; ++j)
@@ -177,7 +180,8 @@ void CLordPe::ExportTable()
 			DWORD dwNameOfs = RVAToOffset(m_pDosHdr, dwNameRva);
 			char* pFunctionName = nullptr;
 			pFunctionName = (char*)(dwNameOfs + (DWORD)m_pDosHdr);
-			printf("\t函数名:[%s]\n", pFunctionName);
+			exportFunInfo.FunctionName = pFunctionName;//函数名
+			exportFunInfo.ExportOrdinals = pExpTab->Base + i;//函数导出序号
 		}
 		else
 		{
@@ -186,12 +190,15 @@ void CLordPe::ExportTable()
 			{
 				// 函数的导出序号:
 				// 序号基数 + 虚序号(地址标的下标)
-				printf("\t导出序号[%04X]\n", pExpTab->Base + i);
+				exportFunInfo.FunctionName = L"";//函数名为空
+				exportFunInfo.ExportOrdinals = pExpTab->Base + i;//函数导出序号
 			}
 		}
+		m_vecExportFunInfo.push_back(exportFunInfo);
 	}
 }
 
+//RVA转文件偏移
 DWORD CLordPe::RVAToOffset(IMAGE_DOS_HEADER* pDos,
 	DWORD dwRva)
 {

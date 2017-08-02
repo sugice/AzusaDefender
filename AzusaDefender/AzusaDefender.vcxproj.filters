@@ -40,6 +40,15 @@
     <Filter Include="垃圾 内存 工具">
       <UniqueIdentifier>{48b103aa-bb89-43d0-a93e-ca5e89006ffc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="解析PE\导出表">
+      <UniqueIdentifier>{87c83eae-b604-4971-a69a-a9fed71c2463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="解析PE\解析PE主界面">
+      <UniqueIdentifier>{0876783d-6396-45b4-816a-19e12289c2c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="解析PE\数据处理">
+      <UniqueIdentifier>{52f1321d-253f-4156-824f-39adfa838968}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -84,11 +93,14 @@
     <ClInclude Include="DiaD.h">
       <Filter>杀毒</Filter>
     </ClInclude>
+    <ClInclude Include="ExportTable.h">
+      <Filter>解析PE\导出表</Filter>
+    </ClInclude>
     <ClInclude Include="DiaPe.h">
-      <Filter>解析PE</Filter>
+      <Filter>解析PE\解析PE主界面</Filter>
     </ClInclude>
     <ClInclude Include="LordPe.h">
-      <Filter>解析PE</Filter>
+      <Filter>解析PE\数据处理</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -125,11 +137,14 @@
     <ClCompile Include="DiaD.cpp">
       <Filter>杀毒</Filter>
     </ClCompile>
+    <ClCompile Include="ExportTable.cpp">
+      <Filter>解析PE\导出表</Filter>
+    </ClCompile>
     <ClCompile Include="DiaPe.cpp">
-      <Filter>解析PE</Filter>
+      <Filter>解析PE\解析PE主界面</Filter>
     </ClCompile>
     <ClCompile Include="LordPe.cpp">
-      <Filter>解析PE</Filter>
+      <Filter>解析PE\数据处理</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
