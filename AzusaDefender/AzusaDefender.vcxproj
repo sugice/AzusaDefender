@@ -192,7 +192,9 @@
     <ClInclude Include="DiaB.h" />
     <ClInclude Include="DiaC.h" />
     <ClInclude Include="DiaD.h" />
+    <ClInclude Include="DiaPe.h" />
     <ClInclude Include="DiaVs.h" />
+    <ClInclude Include="LordPe.h" />
     <ClInclude Include="MD5.h" />
     <ClInclude Include="MyListBox.h" />
     <ClInclude Include="MyTabCtrl.h" />
@@ -207,7 +209,9 @@
     <ClCompile Include="DiaB.cpp" />
     <ClCompile Include="DiaC.cpp" />
     <ClCompile Include="DiaD.cpp" />
+    <ClCompile Include="DiaPe.cpp" />
     <ClCompile Include="DiaVs.cpp" />
+    <ClCompile Include="LordPe.cpp" />
     <ClCompile Include="MD5.cpp" />
     <ClCompile Include="MyListBox.cpp" />
     <ClCompile Include="MyTabCtrl.cpp" />

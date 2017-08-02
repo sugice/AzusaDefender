@@ -19,12 +19,6 @@
     <Filter Include="Tab控件">
       <UniqueIdentifier>{4533385e-7590-461d-b1d5-3e5d5cf36bfb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DiaA">
-      <UniqueIdentifier>{48b103aa-bb89-43d0-a93e-ca5e89006ffc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DiaB">
-      <UniqueIdentifier>{18f91ac8-2e8d-4f45-a64f-49bcfa1b865a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="vs工程清理">
       <UniqueIdentifier>{acaf01a1-85b5-4bf5-b53b-f3a60feca496}</UniqueIdentifier>
     </Filter>
@@ -34,8 +28,17 @@
     <Filter Include="计算文件MD5值">
       <UniqueIdentifier>{fe57862f-aea5-41bb-8d7c-8e25ebe051a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DiaD">
+    <Filter Include="解析PE">
+      <UniqueIdentifier>{4b93876a-2fd7-4c55-a500-547d32d158eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="杀毒">
       <UniqueIdentifier>{9167371f-bce2-4c0f-b933-8e0d4e4c7e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="进程">
+      <UniqueIdentifier>{18f91ac8-2e8d-4f45-a64f-49bcfa1b865a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="垃圾 内存 工具">
+      <UniqueIdentifier>{48b103aa-bb89-43d0-a93e-ca5e89006ffc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,10 +64,10 @@
       <Filter>Tab控件</Filter>
     </ClInclude>
     <ClInclude Include="DiaA.h">
-      <Filter>DiaA</Filter>
+      <Filter>垃圾 内存 工具</Filter>
     </ClInclude>
     <ClInclude Include="DiaB.h">
-      <Filter>DiaB</Filter>
+      <Filter>进程</Filter>
     </ClInclude>
     <ClInclude Include="DiaVs.h">
       <Filter>vs工程清理</Filter>
@@ -79,7 +82,13 @@
       <Filter>计算文件MD5值</Filter>
     </ClInclude>
     <ClInclude Include="DiaD.h">
-      <Filter>DiaD</Filter>
+      <Filter>杀毒</Filter>
+    </ClInclude>
+    <ClInclude Include="DiaPe.h">
+      <Filter>解析PE</Filter>
+    </ClInclude>
+    <ClInclude Include="LordPe.h">
+      <Filter>解析PE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -96,10 +105,10 @@
       <Filter>Tab控件</Filter>
     </ClCompile>
     <ClCompile Include="DiaA.cpp">
-      <Filter>DiaA</Filter>
+      <Filter>垃圾 内存 工具</Filter>
     </ClCompile>
     <ClCompile Include="DiaB.cpp">
-      <Filter>DiaB</Filter>
+      <Filter>进程</Filter>
     </ClCompile>
     <ClCompile Include="DiaVs.cpp">
       <Filter>vs工程清理</Filter>
@@ -114,7 +123,13 @@
       <Filter>计算文件MD5值</Filter>
     </ClCompile>
     <ClCompile Include="DiaD.cpp">
-      <Filter>DiaD</Filter>
+      <Filter>杀毒</Filter>
+    </ClCompile>
+    <ClCompile Include="DiaPe.cpp">
+      <Filter>解析PE</Filter>
+    </ClCompile>
+    <ClCompile Include="LordPe.cpp">
+      <Filter>解析PE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
