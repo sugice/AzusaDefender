@@ -1,0 +1,3 @@
+TIM.exe
+OneDrive.exe
+WeChat.exe

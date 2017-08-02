@@ -6,7 +6,19 @@
 #include "DiaB.h"
 #include "afxdialogex.h"
 #include <Psapi.h>
+#include<iostream>  
+#include<fstream>
+#include <string>
+using namespace std;
 
+// 宽字符转换为多字符(Unicode --> ASCII)
+#define  WCHAR_TO_CHAR(lpW_Char, lpChar) \
+    WideCharToMultiByte(CP_ACP, NULL, lpW_Char, -1, lpChar, _countof(lpChar), NULL, FALSE);
+
+
+// 多字符转换为宽字符(ASCII --> Unicode)
+#define  CHAR_TO_WCHAR(lpChar, lpW_Char) \
+    MultiByteToWideChar(CP_ACP, NULL, lpChar, -1, lpW_Char, _countof(lpW_Char));
 
 // CDiaB 对话框
 
@@ -34,6 +46,7 @@ void CDiaB::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CDiaB, CDialogEx)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, &CDiaB::OnNMDblclkList1)
+	ON_BN_CLICKED(IDC_BUTTON1, &CDiaB::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 BOOL CDiaB::OnInitDialog()
@@ -67,7 +80,7 @@ BOOL CDiaB::OnInitDialog()
 	m_ctrlList4.InsertColumn(0, L"窗口名", 0, 80);
 	// 遍历线程信息
 	EnumProcess();
-	InsertProcessList();
+	InsertProcessList(m_vecProcess);
 	//遍历窗口信息
 	EnumWindow();
 	InsertWindowInfo();
@@ -137,13 +150,13 @@ BOOL CDiaB::EnumProcess()
 // Returns:   BOOL
 // Qualifier: 将数据插入到列表控件中
 //************************************
-BOOL CDiaB::InsertProcessList()
+BOOL CDiaB::InsertProcessList(vector<MY_PROCESSINFO>& vecProcess)
 {
 	m_ctrlList.DeleteAllItems();
 	int i = 0;//索引用
 	CString temp;
 	// L"进程名称",L"PID",L"父进程PID",L"线程数量",L"优先级",L"进程所在路径"
-	for (MY_PROCESSINFO &stc : m_vecProcess) {
+	for (MY_PROCESSINFO &stc : vecProcess) {
 		// 第1列,进程名称
 		m_ctrlList.InsertItem(i, stc.szProcess);
 		// 第2列,PID
@@ -330,3 +343,103 @@ BOOL CDiaB::InsertWindowInfo()
 	}
 	return TRUE;
 }
+
+void CDiaB::OnBnClickedButton1()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	GetEvilProcessInfo();
+	InsertProcessList(m_vecEvilProcess);
+}
+
+//将黑白名单的信息读取到响应vector中
+void CDiaB::ReadWBList()
+{
+	//读取保存着白名单的文件信息
+	string buf;
+	CStringA strObj;
+	CString wstrObj;
+	WCHAR wstrBuf[100] = { 0 };
+	ifstream infile;
+	infile.open(_T("whitelist.txt"));
+	if (!infile)
+	{
+		return;
+	}
+	//逐行读取直到读取完毕
+	while (getline(infile, buf))
+	{
+		strObj.Format("%s", buf.c_str());
+		CHAR_TO_WCHAR(strObj.GetBuffer(), wstrBuf);
+		wstrObj = wstrBuf;
+		m_vecWhitelist.push_back(wstrObj);
+	}
+	infile.close();
+	//读取保存着黑名单的文件信息
+	string buf2;
+	CStringA strObj2;
+	CString wstrObj2;
+	WCHAR wstrBuf2[100] = { 0 };
+	ifstream infile2;
+	infile2.open(_T("blacklist.txt"));
+	if (!infile2)
+	{
+		return;
+	}
+	//逐行读取直到读取完毕
+	while (getline(infile2, buf2))
+	{
+		strObj2.Format("%s", buf2.c_str());
+		CHAR_TO_WCHAR(strObj2.GetBuffer(), wstrBuf2);
+		wstrObj2 = wstrBuf2;
+		m_vecBlacklist.push_back(wstrObj2);
+	}
+	infile2.close();
+}
+
+//寻找恶意进程
+void CDiaB::GetEvilProcessInfo()
+{
+	//读黑白名单信息
+	ReadWBList();
+	//比对进程名
+	CString strProName;
+	for (auto vecProcess : m_vecProcess)//所有进程信息
+	{
+		MY_PROCESSINFO stcInfo = { 0 };
+		strProName = vecProcess.szProcess;
+		for (auto vecBlacklist : m_vecBlacklist)//黑名单进程名
+		{
+			if (vecBlacklist == strProName)
+			{
+				BOOL isNotInWL = TRUE;
+				//看看在不在白名单中
+				for (auto vecWhitelist : m_vecWhitelist)//白名单进程名
+				{
+					if (vecWhitelist == strProName)
+					{
+						isNotInWL = FALSE;
+						break;
+					}
+				}
+				//不在白名单中
+				if (isNotInWL)
+				{
+					//将信息转存
+					stcInfo.dwParentProcess = vecProcess.dwParentProcess;
+					stcInfo.dwPid = vecProcess.dwPid;
+					stcInfo.dwPriorityClass = vecProcess.dwPriorityClass;
+					stcInfo.dwThreadCount = vecProcess.dwThreadCount;
+					wcscpy_s(stcInfo.szFullProcess, MAX_PATH, vecProcess.szFullProcess);
+					wcscpy_s(stcInfo.szProcess, MAX_PATH, vecProcess.szProcess);
+					m_vecEvilProcess.push_back(stcInfo);
+					break;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+	}
+}
+

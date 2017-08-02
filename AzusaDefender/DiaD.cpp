@@ -9,6 +9,7 @@
 #include<iostream>  
 #include<fstream>
 #include <string>
+#include <TlHelp32.h>
 using namespace std;
 
 
@@ -135,6 +136,7 @@ void CDiaD::CalculateMD5()
 	CMD5 md5;
 	CHAR strFilePath[MAX_PATH] = { 0 };
 	CStringA cstrMD5;
+	//读取保存着MD5值的文件信息
 	string buf;
 	CStringA strObj;
 	ifstream infile;
@@ -234,3 +236,100 @@ CString CDiaD::ByteConversionGBMBKB(__int64 KSize)
 		return strObj + _T("Byte");//显示Byte值
 	}
 }
+
+
+//BOOL CDiaD::GetEvilProcess()
+//{
+//	// 清空
+//	m_vecProcess.clear();
+//	// 遍历
+//	HANDLE hProcessSnap;//进程快照句柄
+//	HANDLE hProcess;//进程句柄
+//	PROCESSENTRY32 stcPe32 = { 0 };//进程快照信息
+//	stcPe32.dwSize = sizeof(PROCESSENTRY32);
+//	//1.创建一个进程相关的快照句柄
+//	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+//	if (hProcessSnap == INVALID_HANDLE_VALUE) return FALSE;
+//	//2通过进程快照句柄获取第一个进程信息
+//	if (!Process32First(hProcessSnap, &stcPe32)) {
+//		CloseHandle(hProcessSnap);
+//		return FALSE;
+//	}
+//	//3循环遍历进程信息
+//	do {
+//		//3.1获取进程名
+//		wcscpy_s(stcInfo.szProcess, MAX_PATH, stcPe32.szExeFile);
+//
+//	} while (Process32Next(hProcessSnap, &stcPe32));
+//	CloseHandle(hProcessSnap);
+//	return TRUE;
+//}
+//
+//// [Added by thinkhy 09/12/20]  
+//// Description: Kill process(es) by PID.  
+//// Reference:   http://www.vckbase.com/document/viewdoc/?id=1882  
+//// RETVALUE:    SUCCESS   TRUE  
+////              FAILED    FALSE  
+//BOOL CDiaD::KillProcess(DWORD dwPid)
+//{
+//	HANDLE hPrc;
+//
+//	if (0 == dwPid) return FALSE;
+//
+//	hPrc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPid);  // Opens handle to the process.  
+//
+//	if (!TerminateProcess(hPrc, 0)) // Terminates a process.  
+//	{
+//		CloseHandle(hPrc);
+//		return FALSE;
+//	}
+//	else
+//		WaitForSingleObject(hPrc, DELAYTIME); // At most ,waite 2000  millisecond.  
+//
+//	CloseHandle(hPrc);
+//	return TRUE;
+//}
+//
+//
+//// [Added by thinkhy 09/12/20]  
+//// Description: Kill process(es) by Name.  
+//// Reference:   http://bbs.51testing.com/thread-65884-1-1.html  
+//// RETVALUE:    SUCCESS   TRUE  
+////              FAILED    FALSE  
+//BOOL CDiaD::KillProcessByName(const TCHAR *lpszProcessName) {
+//	unsigned int   pid = -1;
+//	BOOL    retval = TRUE;
+//
+//	if (lpszProcessName == NULL)
+//		return -1;
+//
+//	DWORD dwRet = 0;
+//	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+//	PROCESSENTRY32 processInfo;
+//	processInfo.dwSize = sizeof(PROCESSENTRY32);
+//	int flag = Process32First(hSnapshot, &processInfo);
+//
+//	// Find the process with name as same as lpszProcessName  
+//	while (flag != 0)
+//	{
+//		if (_tcscmp(processInfo.szExeFile, lpszProcessName) == 0) {
+//			// Terminate the process.  
+//			pid = processInfo.th32ProcessID;
+//			HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, TRUE, pid);
+//
+//			if (TerminateProcess(hProcess, 0) != TRUE) { // Failed to terminate it.  
+//				retval = FALSE;
+//				break;
+//			}
+//		}
+//
+//		flag = Process32Next(hSnapshot, &processInfo);
+//	} // while (flag != 0)  
+//
+//	CloseHandle(hSnapshot);
+//
+//	if (pid == -1)
+//		return FALSE;
+//
+//	return retval;
+//}

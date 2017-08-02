@@ -35,6 +35,5 @@ public:
 	afx_msg void OnBnClickedButton1();
 	CListCtrl m_ctrlList;
 	virtual BOOL OnInitDialog();
-//	afx_msg void OnHdnItemchangedList1(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedButton2();
 };

@@ -32,7 +32,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	BOOL EnumProcess();//枚举进程
-	BOOL InsertProcessList();
+	BOOL InsertProcessList(vector<MY_PROCESSINFO>& vecProcess);
 	BOOL EnumThread(DWORD dwPid);
 	BOOL InsertThreadInfo();
 	vector<MY_PROCESSINFO> m_vecProcess;
@@ -52,4 +52,10 @@ public:
 	BOOL InsertModuleInfo();
 	BOOL EnumWindow();
 	BOOL InsertWindowInfo();
+	afx_msg void OnBnClickedButton1();
+	vector<CString> m_vecWhitelist;
+	vector<CString> m_vecBlacklist;
+	vector<MY_PROCESSINFO> m_vecEvilProcess;
+	void ReadWBList();
+	void GetEvilProcessInfo();
 };
