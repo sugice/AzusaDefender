@@ -69,7 +69,8 @@ BOOL CDiaD::OnInitDialog()
 void CDiaD::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	TraverseFile(L"D://Test", m_vecFile);
+	m_vecFile.clear();
+	TraverseFile(L"D:\\Test", m_vecFile);
 	CalculateMD5();
 	GetVirusInfo();
 }
@@ -84,9 +85,9 @@ void CDiaD::OnBnClickedButton2()
 		{
 			CString deFile = m_ctrlList.GetItemText(i, 0);
 			DeleteFile(deFile.GetBuffer());
-			m_ctrlList.DeleteItem(i);
 		}
 	}
+	m_ctrlList.DeleteAllItems();
 }
 
 // 逻辑代码部分
@@ -133,9 +134,7 @@ void CDiaD::TraverseFile(
 //将遍历到的文件进行MD5比对
 void CDiaD::CalculateMD5()
 {
-	CMD5 md5;
-	CHAR strFilePath[MAX_PATH] = { 0 };
-	CStringA cstrMD5;
+	m_vecMD5Save.clear();
 	//读取保存着MD5值的文件信息
 	string buf;
 	CStringA strObj;
@@ -152,6 +151,12 @@ void CDiaD::CalculateMD5()
 		m_vecMD5Save.push_back(strObj);
 	}
 	infile.close();
+	// 准备开始比对MD5值信息
+	CMD5 md5;
+	CHAR strFilePath[MAX_PATH] = { 0 };
+	CStringA cstrMD5;
+	m_vecVirus.clear();
+	m_vecVirusMD5.clear();
 	for (auto vecFile : m_vecFile)
 	{
 		WCHAR_TO_CHAR(vecFile.GetBuffer(), strFilePath);
@@ -164,6 +169,7 @@ void CDiaD::CalculateMD5()
 			{
 				m_vecVirus.push_back(vecFile);//将病毒文件保存起来
 				m_vecVirusMD5.push_back(cstrMD5);//将对应的病毒MD5值保存起来
+				break;
 			}
 		}
 	}
