@@ -42,6 +42,23 @@ typedef struct _SectionTable
 	DWORD Characteristics;//区段属性
 }SectionTable, *PSectionTable;
 
+//导出表基本信息
+typedef struct _MY_IM_EX_DI
+{
+	CString name;//dll名
+	DWORD Base;//序号基数
+	DWORD NumberOfFunctions;//函数数量
+	DWORD NumberOfNames;//函数名称数量
+	DWORD AddressOfFunctions;//地址表RVA
+	DWORD AddressOfNames;//名称表RVA
+	DWORD AddressOfNameOrdinals;//序号表RVA
+}MY_IM_EX_DI,*PMY_IM_EX_DI;
+
+//导出表中有函数名的函数信息
+typedef struct _EXPORTFUN
+{
+
+}EXPORTFUN,*PEXPORTFUN;
 class CLordPe
 {
 public:
@@ -49,8 +66,13 @@ public:
 	~CLordPe();
 public:
 	void GetBasicInfo(CString& filePath);
-	BASICINFO m_basicInfo;
-	vector<DataTableOfContents> m_vecDataTable;
-	vector<SectionTable> m_vecSectionTable;
+	void ExportTable();
+	DWORD RVAToOffset(IMAGE_DOS_HEADER* pDos, DWORD dwRva);
+public:
+	PIMAGE_DOS_HEADER m_pDosHdr;//DOS头地址
+	BASICINFO m_basicInfo;//头文件中的基础信息
+	vector<DataTableOfContents> m_vecDataTable;//数据目录表
+	vector<SectionTable> m_vecSectionTable;//区段表
+	MY_IM_EX_DI m_my_im_ex_di;
 };
 
