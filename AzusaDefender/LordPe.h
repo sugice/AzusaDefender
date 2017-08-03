@@ -55,22 +55,6 @@ typedef struct _MY_IM_EX_DI
 }MY_IM_EX_DI,*PMY_IM_EX_DI;
 
 //导入表基本信息
-/*
-typedef struct _IMAGE_IMPORT_DESCRIPTOR {
-union {
-DWORD   Characteristics;            // 0 for terminating null import descriptor
-DWORD   OriginalFirstThunk;         // RVA to original unbound IAT (PIMAGE_THUNK_DATA)
-} DUMMYUNIONNAME;
-DWORD   TimeDateStamp;                  // 0 if not bound,
-// -1 if bound, and real date\time stamp
-//     in IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT (new BIND)
-// O.W. date/time stamp of DLL bound to (Old BIND)
-
-DWORD   ForwarderChain;                 // -1 if no forwarders
-DWORD   Name;
-DWORD   FirstThunk;                     // RVA to IAT (if bound this IAT has actual addresses)
-} IMAGE_IMPORT_DESCRIPTOR;
-*/
 typedef struct _MY_IMPORT_DESCRIPTOR
 {
 	CString Name;//DLL名称
@@ -81,6 +65,7 @@ typedef struct _MY_IMPORT_DESCRIPTOR
 
 }MY_IMPORT_DESCRIPTOR,*PMY_IMPORT_DESCRIPTOR;
 
+//导入函数信息
 typedef struct _IMPORTFUNINFO
 {
 	DWORD Ordinal;
@@ -97,6 +82,15 @@ typedef struct _EXPORTFUNINFO
 	CString FunctionName;//函数名
 }EXPORTFUNINFO,*PEXPORTFUNINFO;
 
+
+typedef struct _RESOURCEINFO
+{
+	CString NameOrID;//资源名称或ID
+	DWORD ResourceRVA;//资源RVA
+	DWORD ResourceSize;//资源大小
+}RESOURCEINFO, *PRESOURCEINFO;
+
+
 class CLordPe
 {
 public:
@@ -107,18 +101,31 @@ public:
 	void GetBasicInfo();
 	void ExportTable();
 	void ImportTable();
+	void ResourceTable();
+	void parseResourcesTable(DWORD dwResRootDirAddr, IMAGE_RESOURCE_DIRECTORY* pResDir, int nDeep);
 	BOOL GetDosHead(CString& filePath);
 	DWORD RVAToOffset(IMAGE_DOS_HEADER* pDos, DWORD dwRva);
 public:
 	BYTE* m_pBuf;//用于释放申请的空间
 	PIMAGE_DOS_HEADER m_pDosHdr;//DOS头地址
+	//----------文件头、扩展头、数据目录表、区段表-----------//
 	BASICINFO m_basicInfo;//头文件中的基础信息
 	vector<DataTableOfContents> m_vecDataTable;//数据目录表
 	vector<SectionTable> m_vecSectionTable;//区段表
+
+	//----------------导出表---------------------//
 	vector<EXPORTFUNINFO> m_vecExportFunInfo;
 	MY_IM_EX_DI m_my_im_ex_di;
+
+	//----------------导出表---------------------//
 	vector<MY_IMPORT_DESCRIPTOR> m_vecImportDescriptor;
 	vector<IMPORTFUNINFO> m_vecImportFunInfo;
 	vector<vector<IMPORTFUNINFO>> m_vvImportFunInfo;
+
+	//---------------资源表---------------------//
+	vector<CString> m_vecResourceTpye;
+	vector<RESOURCEINFO> m_vecResourceInfo;
+	vector<vector<RESOURCEINFO>> m_vvResourceInfo;
+
 };
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "LordPe.h"
 
+RESOURCEINFO resourceInfo = { 0 };
 
 CLordPe::CLordPe(CString& filePath)
 {
@@ -314,6 +315,155 @@ void CLordPe::ImportTable()
 		}
 		m_vvImportFunInfo.push_back(m_vecImportFunInfo);
 		++pImpArray;
+	}
+}
+
+//得到资源表起始地址，并调用解析函数
+void CLordPe::ResourceTable()
+{
+	// nt头,包含这文件头和扩展头
+	IMAGE_NT_HEADERS* pNtHdr;
+	pNtHdr = (IMAGE_NT_HEADERS*)(m_pDosHdr->e_lfanew + (DWORD)m_pDosHdr);
+
+	IMAGE_OPTIONAL_HEADER* pOptHdr;// 扩展头
+	pOptHdr = &(pNtHdr->OptionalHeader);
+
+	//数据目录表
+	PIMAGE_DATA_DIRECTORY pDataDirectory = pOptHdr->DataDirectory;
+
+	// 5. 找到导入表
+	// 5. 得到导入表的RVA
+	DWORD dwResRootRva = pDataDirectory[IMAGE_DIRECTORY_ENTRY_RESOURCE].VirtualAddress;
+	PIMAGE_RESOURCE_DIRECTORY pResRoot;
+	pResRoot = (IMAGE_RESOURCE_DIRECTORY*)(RVAToOffset(m_pDosHdr, dwResRootRva) + m_pDosHdr);
+	parseResourcesTable((DWORD)pResRoot, pResRoot, 1);
+
+}
+
+//解析资源表的函数，递归解析
+void CLordPe::parseResourcesTable(DWORD dwResRootDirAddr,//根目录的首地址
+	IMAGE_RESOURCE_DIRECTORY* pResDir,//需要解析的资源目录
+	int nDeep)//记录这是第几层目录
+{
+	// 获取目录入口的总个数
+	DWORD dwEntryCount = pResDir->NumberOfIdEntries + pResDir->NumberOfNamedEntries;
+	// 获取目录入口数组的首地址
+	IMAGE_RESOURCE_DIRECTORY_ENTRY* pResDirEntry;
+	pResDirEntry = (IMAGE_RESOURCE_DIRECTORY_ENTRY*)(pResDir + 1);
+	//pResDir + 1意思就是根据pResDir被定义的类型的长度，在pResDir原来的地址上再加上这个长度，使pResDir指向下一个地址。
+
+	WCHAR buff[512];
+
+	if (nDeep == 1) { //第一层目录入口,ID信息是资源类型的id,指向下一层的偏移指向的是第二层的资源目录.
+		m_vecResourceTpye.clear();
+		m_vvResourceInfo.clear();
+		for (DWORD i = 0; i < dwEntryCount; ++i)
+		{
+			CString resourceType;
+			// 解析资源的类型,判断资源类型是整形的还是字符串类型的
+			if (pResDirEntry[i].NameIsString == 1) {
+				// 资源类型是字符串
+				IMAGE_RESOURCE_DIR_STRING_U* pTypeName;
+				// NameOffset 保存的偏移,是把资源根目录的地址作为基地址的偏移
+				pTypeName =(IMAGE_RESOURCE_DIR_STRING_U*)(pResDirEntry[i].NameOffset + dwResRootDirAddr);
+
+				wcsncpy_s(buff, pTypeName->NameString, pTypeName->Length);//结构体名称最后的_U说明了结构体内存放的是宽字节字符
+				resourceType = buff;
+			}
+			else {
+				// 说明资源类型ID是一个整形的值
+				char *szType[] =
+				{
+					("") ,				// 0
+					("光标") ,				// 1 
+					("位图") ,				// 2 RT_BITMAP
+					("图标") ,			    // 3 RT_ICON
+					("菜单") ,				// 4 RT_MENU
+					("对话框") ,			// 5 RT_DIALOG      
+					("字符串表") ,			// 6 RT_STRING      
+					("字体目录") ,			// 7 RT_FONTDIR     
+					("字体") ,				// 8 RT_FONT        
+					("加速键") ,			// 9 RT_ACCELERATOR 
+					("RC数据") ,		// 10 RT_RCDATA      
+					("消息表") ,			// 11 RT_MESSAGETABLE
+					("光标组") ,			// 12 
+					("") ,				   // 13 
+					("图标组") ,			// 14 
+					"" ,					// 15
+					("版本信息") ,			// 16
+					("对话框包含目录") ,	// 17 #define RT_DLGINCLUDE   MAKEINTRESOURCE(17)
+					"" ,								// 18 #define RT_PLUGPLAY     MAKEINTRESOURCE(19)
+					"" ,								// 19 #define RT_VXD          MAKEINTRESOURCE(20)
+					"" ,								// 20 #define RT_ANICURSOR    MAKEINTRESOURCE(21)
+					"" ,								// 21 #define RT_ANIICON      MAKEINTRESOURCE(22)
+					"" ,									// 22 
+					("HTML") ,						    // 23 #define RT_HTML         MAKEINTRESOURCE(23)
+					("清单文件")			// 24 RT_MANIFEST
+				};
+
+				if (pResDirEntry[i].Id >= 1 && pResDirEntry[i].Id <= 24) {
+					resourceType = szType[pResDirEntry[i].Id];
+				}
+				else {
+					resourceType.Format(L"%08X", pResDirEntry[i].Id);
+				}
+			}
+			m_vecResourceTpye.push_back(resourceType);
+
+			// 解析下一层目录
+			IMAGE_RESOURCE_DIRECTORY* pNextDir =
+				(IMAGE_RESOURCE_DIRECTORY*)(pResDirEntry[i].OffsetToDirectory + dwResRootDirAddr);
+
+			parseResourcesTable(dwResRootDirAddr, pNextDir, nDeep + 1);
+			m_vvResourceInfo.push_back(m_vecResourceInfo);
+		}
+	}
+	else if (nDeep == 2) { /*第二层*/
+
+		m_vecResourceInfo.clear();
+		for (DWORD i = 0; i < dwEntryCount; ++i)
+		{
+			ZeroMemory(&resourceInfo, sizeof(resourceInfo));
+			// 资源目录的第二层, 保存的是每种资源的资源id
+			// 解析ID
+			// 1. 整形ID
+			// 2. 字符串ID
+			if (pResDirEntry[i].NameIsString) {
+				// 资源类型是字符串
+				IMAGE_RESOURCE_DIR_STRING_U* pTypeName;
+				// NameOffset 保存的偏移,是把资源根目录的地址作为基地址的偏移
+				pTypeName =
+					(IMAGE_RESOURCE_DIR_STRING_U*)
+					(pResDirEntry[i].NameOffset + dwResRootDirAddr);
+
+				wcsncpy_s(buff, pTypeName->NameString, pTypeName->Length);
+				resourceInfo.NameOrID = buff;
+			}
+			else {
+				CString temp;
+				temp.Format(L"%08X", pResDirEntry[i].Id);
+				resourceInfo.NameOrID = temp;
+			}
+
+			// 解析偏移
+			// 解析下一层目录
+			IMAGE_RESOURCE_DIRECTORY* pNextDir =
+				(IMAGE_RESOURCE_DIRECTORY*)(pResDirEntry[i].OffsetToDirectory + dwResRootDirAddr);
+
+			parseResourcesTable(dwResRootDirAddr, pNextDir, nDeep + 1);
+			m_vecResourceInfo.push_back(resourceInfo);
+		}
+	}
+	else if (nDeep == 3) {/*第三层*/
+
+		// 第三层资源目录入口, 保存的是资源的数据入口
+		// 解析偏移(偏移是一个指向数据入口的偏移)
+		IMAGE_RESOURCE_DATA_ENTRY* pResDataEntry = 0;
+
+		if (pResDirEntry->DataIsDirectory == 0) {
+			resourceInfo.ResourceRVA = pResDataEntry->OffsetToData;
+			resourceInfo.ResourceSize = pResDataEntry->Size;
+		}
 	}
 }
 

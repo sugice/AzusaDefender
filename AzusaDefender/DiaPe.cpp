@@ -8,6 +8,7 @@
 #include "afxdialogex.h"
 #include "ExportTable.h"
 #include "ImportTable.h"
+#include "ResourceTable.h"
 
 // CDiaPe 对话框
 
@@ -67,6 +68,7 @@ BEGIN_MESSAGE_MAP(CDiaPe, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CDiaPe::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CDiaPe::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CDiaPe::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CDiaPe::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -197,4 +199,13 @@ void CDiaPe::OnBnClickedButton3()
 	CImportTable* importTable = new CImportTable;
 	importTable->Create(IDD_DIALOG8, this);
 	importTable->ShowWindow(SW_SHOW);
+}
+
+
+void CDiaPe::OnBnClickedButton4()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CResourceTable* resourceTable = new CResourceTable;
+	resourceTable->Create(IDD_DIALOG9, this);
+	resourceTable->ShowWindow(SW_SHOW);
 }

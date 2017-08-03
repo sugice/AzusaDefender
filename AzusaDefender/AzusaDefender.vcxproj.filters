@@ -108,6 +108,9 @@
     <ClInclude Include="ImportTable.h">
       <Filter>解析PE\导入表</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceTable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp">
@@ -154,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="ImportTable.cpp">
       <Filter>解析PE\导入表</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceTable.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
