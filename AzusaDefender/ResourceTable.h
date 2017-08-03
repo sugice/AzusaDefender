@@ -25,4 +25,5 @@ public:
 	CListCtrl m_ctrlList;
 	CListCtrl m_ctrlList2;
 	virtual BOOL OnInitDialog();
+	afx_msg void OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult);
 };

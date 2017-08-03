@@ -331,11 +331,11 @@ void CLordPe::ResourceTable()
 	//数据目录表
 	PIMAGE_DATA_DIRECTORY pDataDirectory = pOptHdr->DataDirectory;
 
-	// 5. 找到导入表
-	// 5. 得到导入表的RVA
+	// 5. 找到资源表
+	// 5. 得到资源表的RVA
 	DWORD dwResRootRva = pDataDirectory[IMAGE_DIRECTORY_ENTRY_RESOURCE].VirtualAddress;
 	PIMAGE_RESOURCE_DIRECTORY pResRoot;
-	pResRoot = (IMAGE_RESOURCE_DIRECTORY*)(RVAToOffset(m_pDosHdr, dwResRootRva) + m_pDosHdr);
+	pResRoot = (IMAGE_RESOURCE_DIRECTORY*)(RVAToOffset(m_pDosHdr, dwResRootRva) + (DWORD)m_pDosHdr);
 	parseResourcesTable((DWORD)pResRoot, pResRoot, 1);
 
 }
@@ -423,7 +423,7 @@ void CLordPe::parseResourcesTable(DWORD dwResRootDirAddr,//根目录的首地址
 		m_vecResourceInfo.clear();
 		for (DWORD i = 0; i < dwEntryCount; ++i)
 		{
-			ZeroMemory(&resourceInfo, sizeof(resourceInfo));
+			//ZeroMemory(&resourceInfo, sizeof(RESOURCEINFO));
 			// 资源目录的第二层, 保存的是每种资源的资源id
 			// 解析ID
 			// 1. 整形ID
@@ -447,8 +447,7 @@ void CLordPe::parseResourcesTable(DWORD dwResRootDirAddr,//根目录的首地址
 
 			// 解析偏移
 			// 解析下一层目录
-			IMAGE_RESOURCE_DIRECTORY* pNextDir =
-				(IMAGE_RESOURCE_DIRECTORY*)(pResDirEntry[i].OffsetToDirectory + dwResRootDirAddr);
+			IMAGE_RESOURCE_DIRECTORY* pNextDir =(IMAGE_RESOURCE_DIRECTORY*)(pResDirEntry[i].OffsetToDirectory + dwResRootDirAddr);
 
 			parseResourcesTable(dwResRootDirAddr, pNextDir, nDeep + 1);
 			m_vecResourceInfo.push_back(resourceInfo);
@@ -459,7 +458,7 @@ void CLordPe::parseResourcesTable(DWORD dwResRootDirAddr,//根目录的首地址
 		// 第三层资源目录入口, 保存的是资源的数据入口
 		// 解析偏移(偏移是一个指向数据入口的偏移)
 		IMAGE_RESOURCE_DATA_ENTRY* pResDataEntry = 0;
-
+		pResDataEntry =(IMAGE_RESOURCE_DATA_ENTRY*)(pResDirEntry->OffsetToData + dwResRootDirAddr);
 		if (pResDirEntry->DataIsDirectory == 0) {
 			resourceInfo.ResourceRVA = pResDataEntry->OffsetToData;
 			resourceInfo.ResourceSize = pResDataEntry->Size;
