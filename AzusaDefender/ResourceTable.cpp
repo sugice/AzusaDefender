@@ -73,7 +73,6 @@ void CResourceTable::OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	// TODO: 在此添加控件通知处理程序代码
-	m_ctrlList2.DeleteAllItems();
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	int nItem = pNMListView->iItem;  // 这就是双击的item的序号
 	//int nSubItem = pNMListView->iSubItem; // 这是对应的子项号

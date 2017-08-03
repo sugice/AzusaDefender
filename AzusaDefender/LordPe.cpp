@@ -340,6 +340,64 @@ void CLordPe::ResourceTable()
 
 }
 
+//重定位表
+void CLordPe::ReLoTable()
+{
+	// nt头,包含这文件头和扩展头
+	IMAGE_NT_HEADERS* pNtHdr;
+	pNtHdr = (IMAGE_NT_HEADERS*)(m_pDosHdr->e_lfanew + (DWORD)m_pDosHdr);
+
+	IMAGE_OPTIONAL_HEADER* pOptHdr;// 扩展头
+	pOptHdr = &(pNtHdr->OptionalHeader);
+
+	//数据目录表
+	PIMAGE_DATA_DIRECTORY pDataDirectory = pOptHdr->DataDirectory;
+
+	// 5. 找到资源表
+	// 5. 得到资源表的RVA和offset
+	IMAGE_BASE_RELOCATION* pBaseRel;
+	pBaseRel = (IMAGE_BASE_RELOCATION*)(RVAToOffset(m_pDosHdr, pDataDirectory[5].VirtualAddress) + (DWORD)m_pDosHdr);
+
+	RELOCAREINFO relocareInfo = { 0 };
+	m_vecReloInfo.clear();
+	while (pBaseRel->VirtualAddress != 0)
+	{
+		// 得到重定位项的个数
+		DWORD dwCount =(pBaseRel->SizeOfBlock - (sizeof(IMAGE_BASE_RELOCATION))) / sizeof(WORD);
+		relocareInfo.dwNumberofReloc = dwCount;
+		relocareInfo.dwAreaRVA = pBaseRel->VirtualAddress;
+		CString temp;
+		FindSectionName(m_pDosHdr, pBaseRel->VirtualAddress, temp);
+		relocareInfo.szSectionName = temp;
+
+		// 得到重定位项的开始地址
+		RELOCINFO relocInfo = { 0 };
+		relocareInfo.vecRelocInfo.clear();
+
+		PTYPEOFFECT pTypeOffset = (TYPEOFFECT*)(pBaseRel + 1);
+		for (DWORD i = 0; i < dwCount; ++i)
+		{
+			if (pTypeOffset[i].Type == IMAGE_REL_BASED_HIGHLOW) {
+				// 得到需要修复的RVA
+				DWORD dwRva = pBaseRel->VirtualAddress + pTypeOffset[i].Offset;
+				relocInfo.dwRelocRVA = dwRva;
+				DWORD dwOffset = RVAToOffset(m_pDosHdr, dwRva);
+				relocInfo.dwOffect = dwOffset;
+				relocInfo.dwType = pTypeOffset->Type;
+				// 得到需要修复的opcode地址操作数的所在的地址
+				DWORD* pAddress = (DWORD*)(dwOffset + (DWORD)m_pDosHdr);
+				relocInfo.dwRelicValue = *pAddress;
+				relocareInfo.vecRelocInfo.push_back(relocInfo);
+			}
+		}
+		m_vecReloInfo.push_back(relocareInfo);
+		// 找到下一个重定位块
+		pBaseRel =(IMAGE_BASE_RELOCATION*)((DWORD)pBaseRel + pBaseRel->SizeOfBlock);
+
+	}
+}
+
+
 //解析资源表的函数，递归解析
 void CLordPe::parseResourcesTable(DWORD dwResRootDirAddr,//根目录的首地址
 	IMAGE_RESOURCE_DIRECTORY* pResDir,//需要解析的资源目录
@@ -472,8 +530,7 @@ DWORD CLordPe::RVAToOffset(IMAGE_DOS_HEADER* pDos,
 {
 	IMAGE_SECTION_HEADER* pScnHdr;
 
-	IMAGE_NT_HEADERS* pNtHdr =
-		(IMAGE_NT_HEADERS*)(pDos->e_lfanew + (DWORD)pDos);
+	IMAGE_NT_HEADERS* pNtHdr =(IMAGE_NT_HEADERS*)(pDos->e_lfanew + (DWORD)pDos);
 
 	pScnHdr = IMAGE_FIRST_SECTION(pNtHdr);
 	DWORD dwNumberOfScn = pNtHdr->FileHeader.NumberOfSections;
@@ -493,4 +550,27 @@ DWORD CLordPe::RVAToOffset(IMAGE_DOS_HEADER* pDos,
 		}
 	}
 	return -1;
+}
+
+//找RVA所在的区段名
+void CLordPe::FindSectionName(IMAGE_DOS_HEADER* pDos,DWORD dwRva,CString& temp)
+{
+	IMAGE_SECTION_HEADER* pScnHdr;
+
+	IMAGE_NT_HEADERS* pNtHdr = (IMAGE_NT_HEADERS*)(pDos->e_lfanew + (DWORD)pDos);
+
+	pScnHdr = IMAGE_FIRST_SECTION(pNtHdr);
+	DWORD dwNumberOfScn = pNtHdr->FileHeader.NumberOfSections;
+
+	// 1. 遍历所有区段找到所在区段
+	for (int i = 0; i < dwNumberOfScn; ++i)
+	{
+		DWORD dwEndOfSection = pScnHdr[i].VirtualAddress + pScnHdr[i].SizeOfRawData;
+		// 判断这个RVA是否在一个区段的范围内
+		if (dwRva >= pScnHdr[i].VirtualAddress
+			&& dwRva < dwEndOfSection)
+		{
+			temp = pScnHdr->Name;
+		}
+	}
 }

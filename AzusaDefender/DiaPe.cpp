@@ -9,6 +9,7 @@
 #include "ExportTable.h"
 #include "ImportTable.h"
 #include "ResourceTable.h"
+#include "ReLoTable.h"
 
 // CDiaPe 对话框
 
@@ -69,6 +70,7 @@ BEGIN_MESSAGE_MAP(CDiaPe, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CDiaPe::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CDiaPe::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CDiaPe::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON6, &CDiaPe::OnBnClickedButton6)
 END_MESSAGE_MAP()
 
 
@@ -208,4 +210,13 @@ void CDiaPe::OnBnClickedButton4()
 	CResourceTable* resourceTable = new CResourceTable;
 	resourceTable->Create(IDD_DIALOG9, this);
 	resourceTable->ShowWindow(SW_SHOW);
+}
+
+
+void CDiaPe::OnBnClickedButton6()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CReLoTable* reLoTable = new CReLoTable;
+	reLoTable->Create(IDD_DIALOG10, this);
+	reLoTable->ShowWindow(SW_SHOW);
 }

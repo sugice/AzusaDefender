@@ -200,6 +200,7 @@
     <ClInclude Include="MD5.h" />
     <ClInclude Include="MyListBox.h" />
     <ClInclude Include="MyTabCtrl.h" />
+    <ClInclude Include="ReLoTable.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceTable.h" />
     <ClInclude Include="stdafx.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="MD5.cpp" />
     <ClCompile Include="MyListBox.cpp" />
     <ClCompile Include="MyTabCtrl.cpp" />
+    <ClCompile Include="ReLoTable.cpp" />
     <ClCompile Include="ResourceTable.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

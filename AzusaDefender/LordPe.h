@@ -82,7 +82,7 @@ typedef struct _EXPORTFUNINFO
 	CString FunctionName;//函数名
 }EXPORTFUNINFO,*PEXPORTFUNINFO;
 
-
+//资源信息
 typedef struct _RESOURCEINFO
 {
 	CString NameOrID;//资源名称或ID
@@ -90,6 +90,27 @@ typedef struct _RESOURCEINFO
 	DWORD ResourceSize;//资源大小
 }RESOURCEINFO, *PRESOURCEINFO;
 
+
+typedef struct _TYPEOFFECT {
+	WORD Offset : 12;  // (1) 大小为12Bit的重定位偏移
+	WORD Type : 4;    // (2) 大小为4Bit的重定位信息类型值
+}TYPEOFFECT, *PTYPEOFFECT;	    // 这个结构体是A1Pass总结的
+
+typedef struct _RELOINFO
+{
+	DWORD dwRelocRVA;//需要重定位的相对虚拟地址
+	DWORD dwOffect;//根据相对虚拟地址算出的文件偏移
+	DWORD dwType;//重定位方式（也可以叫属性）
+	DWORD dwRelicValue;//从算出的文件偏移取出的数据，这个数据就是虚拟地址（VA）
+}RELOCINFO, *PRELOINFO;
+
+typedef struct _RELOCAREAINFO
+{
+	CString szSectionName;//区域所在的节名
+	DWORD dwAreaRVA;//区域的基址（它是一个相对虚拟地址）
+	DWORD dwNumberofReloc;//这个区域的重定位个数
+	std::vector<RELOCINFO> vecRelocInfo;
+}RELOCAREINFO, *PRELOCAREINFO;
 
 class CLordPe
 {
@@ -102,9 +123,11 @@ public:
 	void ExportTable();
 	void ImportTable();
 	void ResourceTable();
+	void ReLoTable();
 	void parseResourcesTable(DWORD dwResRootDirAddr, IMAGE_RESOURCE_DIRECTORY* pResDir, int nDeep);
 	BOOL GetDosHead(CString& filePath);
 	DWORD RVAToOffset(IMAGE_DOS_HEADER* pDos, DWORD dwRva);
+	void FindSectionName(IMAGE_DOS_HEADER* pDos, DWORD dwRva,CString& temp);
 public:
 	BYTE* m_pBuf;//用于释放申请的空间
 	PIMAGE_DOS_HEADER m_pDosHdr;//DOS头地址
@@ -127,5 +150,7 @@ public:
 	vector<RESOURCEINFO> m_vecResourceInfo;
 	vector<vector<RESOURCEINFO>> m_vvResourceInfo;
 
+	//---------------重定位表---------------------//
+	vector<RELOCAREINFO> m_vecReloInfo;
 };
 

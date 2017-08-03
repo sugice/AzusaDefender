@@ -55,6 +55,9 @@
     <Filter Include="解析PE\资源表">
       <UniqueIdentifier>{65c4e3e0-13c3-43c4-8e42-9875196db2bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="解析PE\重定位表">
+      <UniqueIdentifier>{034a022b-2cdb-4edd-8bfa-f6d88adb84f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -114,6 +117,9 @@
     <ClInclude Include="ResourceTable.h">
       <Filter>解析PE\资源表</Filter>
     </ClInclude>
+    <ClInclude Include="ReLoTable.h">
+      <Filter>解析PE\重定位表</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp">
@@ -163,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="ResourceTable.cpp">
       <Filter>解析PE\资源表</Filter>
+    </ClCompile>
+    <ClCompile Include="ReLoTable.cpp">
+      <Filter>解析PE\重定位表</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
