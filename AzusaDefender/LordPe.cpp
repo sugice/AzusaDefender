@@ -245,7 +245,7 @@ void CLordPe::ImportTable()
 	// 导入表数组的个数并没有其它字段记录.
 	// 结束的标志是以一个全0的元素作为结尾
 	m_vecImportDescriptor.clear();
-	m_vecImportFunInfo.clear();
+	m_vvImportFunInfo.clear();
 	while (pImpArray->Name != 0)
 	{
 		MY_IMPORT_DESCRIPTOR myImportDescriptor = { 0 };
@@ -288,6 +288,7 @@ void CLordPe::ImportTable()
 		pIat = (IMAGE_THUNK_DATA*)(IATOfs + (DWORD)m_pDosHdr);
 
 		//INT可以看做是IAT的备份，存在没有备份的情况，因此解析IAT
+		m_vecImportFunInfo.clear();
 		while (pIat->u1.Function != 0)
 		{
 			IMPORTFUNINFO importFunInfo = {0};
@@ -311,7 +312,7 @@ void CLordPe::ImportTable()
 			}
 			++pIat;
 		}
-
+		m_vvImportFunInfo.push_back(m_vecImportFunInfo);
 		++pImpArray;
 	}
 }

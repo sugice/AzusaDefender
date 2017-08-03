@@ -119,5 +119,6 @@ public:
 	MY_IM_EX_DI m_my_im_ex_di;
 	vector<MY_IMPORT_DESCRIPTOR> m_vecImportDescriptor;
 	vector<IMPORTFUNINFO> m_vecImportFunInfo;
+	vector<vector<IMPORTFUNINFO>> m_vvImportFunInfo;
 };
 
