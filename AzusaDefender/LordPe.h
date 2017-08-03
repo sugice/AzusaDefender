@@ -75,8 +75,8 @@ typedef struct _MY_IMPORT_DESCRIPTOR
 {
 	CString Name;//DLL名称
 	DWORD OriginalFirstThunk;//INT(导入名称表RVA)
-	DWORD FirstThunk;//IAT(导入地址表RVA)
 	DWORD OffsetOriginalFirstThunk;//INT(导入名称表偏移)
+	DWORD FirstThunk;//IAT(导入地址表RVA)
 	DWORD OffsetFirstThunk;//IAT(导入地址表偏移)
 
 }MY_IMPORT_DESCRIPTOR,*PMY_IMPORT_DESCRIPTOR;
