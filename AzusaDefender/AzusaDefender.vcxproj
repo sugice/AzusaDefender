@@ -195,6 +195,7 @@
     <ClInclude Include="DiaPe.h" />
     <ClInclude Include="DiaVs.h" />
     <ClInclude Include="ExportTable.h" />
+    <ClInclude Include="ImportTable.h" />
     <ClInclude Include="LordPe.h" />
     <ClInclude Include="MD5.h" />
     <ClInclude Include="MyListBox.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="DiaPe.cpp" />
     <ClCompile Include="DiaVs.cpp" />
     <ClCompile Include="ExportTable.cpp" />
+    <ClCompile Include="ImportTable.cpp" />
     <ClCompile Include="LordPe.cpp" />
     <ClCompile Include="MD5.cpp" />
     <ClCompile Include="MyListBox.cpp" />

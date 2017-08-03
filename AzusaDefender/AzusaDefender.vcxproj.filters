@@ -49,6 +49,9 @@
     <Filter Include="解析PE\数据处理">
       <UniqueIdentifier>{52f1321d-253f-4156-824f-39adfa838968}</UniqueIdentifier>
     </Filter>
+    <Filter Include="解析PE\导入表">
+      <UniqueIdentifier>{15460038-a4fe-4a83-97a5-0972facd2079}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -102,6 +105,9 @@
     <ClInclude Include="LordPe.h">
       <Filter>解析PE\数据处理</Filter>
     </ClInclude>
+    <ClInclude Include="ImportTable.h">
+      <Filter>解析PE\导入表</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp">
@@ -145,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="LordPe.cpp">
       <Filter>解析PE\数据处理</Filter>
+    </ClCompile>
+    <ClCompile Include="ImportTable.cpp">
+      <Filter>解析PE\导入表</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
