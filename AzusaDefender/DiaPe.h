@@ -27,7 +27,7 @@ public:
 	void UpdateDataToEdits();
 public:
 	CString m_strEdit;
-	CString m_strFilePath;
+	static CString m_strFilePath;
 	//////////////////
 	CString m_strEdit2;
 	CString m_strEdit3;

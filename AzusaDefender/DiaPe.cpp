@@ -11,7 +11,7 @@
 // CDiaPe ¶Ô»°¿ò
 
 IMPLEMENT_DYNAMIC(CDiaPe, CDialogEx)
-
+CString CDiaPe::m_strFilePath = L"";
 CDiaPe::CDiaPe(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_DIALOG6, pParent)
 	, m_strEdit(_T(""))
@@ -126,8 +126,8 @@ void CDiaPe::OnBnClickedButton1()
 
 void CDiaPe::UpdateDataToEdits()
 {
-	CLordPe lordPe;
-	lordPe.GetBasicInfo(m_strFilePath);
+	CLordPe lordPe(m_strFilePath);
+	lordPe.GetBasicInfo();
 	m_strEdit2.Format(L"%08X", lordPe.m_basicInfo.NumberOfSections);
 	m_strEdit3.Format(L"%08X", lordPe.m_basicInfo.SizeOfOptionalHeader);
 	m_strEdit4.Format(L"%08X", lordPe.m_basicInfo.Characteristics);

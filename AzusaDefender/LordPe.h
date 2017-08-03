@@ -68,11 +68,14 @@ class CLordPe
 public:
 	CLordPe();
 	~CLordPe();
+	CLordPe(CString& filePath);
 public:
-	void GetBasicInfo(CString& filePath);
+	void GetBasicInfo();
 	void ExportTable();
+	BOOL GetDosHead(CString& filePath);
 	DWORD RVAToOffset(IMAGE_DOS_HEADER* pDos, DWORD dwRva);
 public:
+	BYTE* m_pBuf;//用于释放申请的空间
 	PIMAGE_DOS_HEADER m_pDosHdr;//DOS头地址
 	BASICINFO m_basicInfo;//头文件中的基础信息
 	vector<DataTableOfContents> m_vecDataTable;//数据目录表

@@ -2,55 +2,70 @@
 #include "LordPe.h"
 
 
-CLordPe::CLordPe()
+CLordPe::CLordPe(CString& filePath)
 {
+	GetDosHead(filePath);
 }
 
+CLordPe::CLordPe()
+{
+
+}
 
 CLordPe::~CLordPe()
 {
+	delete[] m_pBuf;
 }
 
-void CLordPe::GetBasicInfo(CString& filePath)
+
+BOOL CLordPe::GetDosHead(CString& filePath)
 {
 	// 1. 打开文件,将文件读取到内存.
 	// CreateFile,ReadFile.
 	HANDLE hFile = INVALID_HANDLE_VALUE;
-	hFile = CreateFile(filePath,GENERIC_READ,FILE_SHARE_READ,NULL,
-						OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
+	hFile = CreateFile(filePath, GENERIC_READ, FILE_SHARE_READ, NULL,
+		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE)
 	{
-		return;
+		return FALSE;
 	}
 	DWORD dwFileSize = 0;
 	dwFileSize = GetFileSize(hFile, NULL);
 
 	// 2. 申请内存空间
 	BYTE* pBuf = new BYTE[dwFileSize];
+	m_pBuf = pBuf;//保存起来，用于析构释放空间
 
 	// 3. 将文件内容读取到内存中
 	DWORD dwRead = 0;
-	ReadFile(hFile,pBuf,dwFileSize,&dwRead,NULL);
+	ReadFile(hFile, pBuf, dwFileSize, &dwRead, NULL);
 
 	// 将缓冲区当成DOS头结构体来解析
-	IMAGE_DOS_HEADER* pDosHdr;// DOS头
-	pDosHdr = (IMAGE_DOS_HEADER*)pBuf;
 	m_pDosHdr = (IMAGE_DOS_HEADER*)pBuf;//将DOS头指针保存起来
 
 	// nt头,包含这文件头和扩展头
 	IMAGE_NT_HEADERS* pNtHdr;
-	pNtHdr = (IMAGE_NT_HEADERS*)(pDosHdr->e_lfanew + (DWORD)pBuf);
+	pNtHdr = (IMAGE_NT_HEADERS*)(m_pDosHdr->e_lfanew + (DWORD)m_pDosHdr);
 
 	// 判断是否是一个有效的pe文件
-	if (pDosHdr->e_magic != IMAGE_DOS_SIGNATURE|| pNtHdr->Signature != IMAGE_NT_SIGNATURE)
+	if (m_pDosHdr->e_magic != IMAGE_DOS_SIGNATURE || pNtHdr->Signature != IMAGE_NT_SIGNATURE)
 	{
 		AfxMessageBox(_T("不是有效的PE文件"));
-		return;
+		return FALSE;
 	}
+	return TRUE;
+}
+
+void CLordPe::GetBasicInfo()
+{
+	// nt头,包含这文件头和扩展头
+	IMAGE_NT_HEADERS* pNtHdr;
+	pNtHdr = (IMAGE_NT_HEADERS*)(m_pDosHdr->e_lfanew + (DWORD)m_pDosHdr);
 
 	IMAGE_FILE_HEADER* pFileHdr; // 文件头
-	IMAGE_OPTIONAL_HEADER* pOptHdr;// 扩展头
 	pFileHdr = &(pNtHdr->FileHeader);
+
+	IMAGE_OPTIONAL_HEADER* pOptHdr;// 扩展头
 	pOptHdr = &(pNtHdr->OptionalHeader);
 	
 	ZeroMemory(&m_basicInfo, sizeof(m_basicInfo));
@@ -103,8 +118,18 @@ void CLordPe::GetBasicInfo(CString& filePath)
 //解析导出表
 void CLordPe::ExportTable()
 {
+	// nt头,包含这文件头和扩展头
+	IMAGE_NT_HEADERS* pNtHdr;
+	pNtHdr = (IMAGE_NT_HEADERS*)(m_pDosHdr->e_lfanew + (DWORD)m_pDosHdr);
+
+	IMAGE_OPTIONAL_HEADER* pOptHdr;// 扩展头
+	pOptHdr = &(pNtHdr->OptionalHeader);
+
+	//数据目录表
+	PIMAGE_DATA_DIRECTORY pDataDirectory = pOptHdr->DataDirectory;
+
 	// 5. 找到导出表
-	DWORD dwExpRva = m_vecDataTable[0].VirtualAddress;
+	DWORD dwExpRva = pDataDirectory[0].VirtualAddress;
 
 	// 5.1 得到RVA的文件偏移
 	DWORD dwExpOfs = RVAToOffset(m_pDosHdr, dwExpRva);
@@ -131,7 +156,7 @@ void CLordPe::ExportTable()
 	DWORD dwNameOfs = RVAToOffset(m_pDosHdr, pExpTab->Name);
 	char* pDllName =(char*)(dwNameOfs + (DWORD)m_pDosHdr);
 	//导出表基本信息
-	ZeroMemory(&m_my_im_ex_di, sizeof(m_my_im_ex_di));//全字段置为零
+	//ZeroMemory(&m_my_im_ex_di, sizeof(m_my_im_ex_di));//全字段置为零
 	m_my_im_ex_di.name = pDllName;
 	m_my_im_ex_di.Base = pExpTab->Base;
 	m_my_im_ex_di.NumberOfFunctions = pExpTab->NumberOfFunctions;
@@ -153,8 +178,8 @@ void CLordPe::ExportTable()
 		(DWORD*)(dwExpNameTabOfs + (DWORD)m_pDosHdr);
 
 	// 序号表是WORD类型的数组
-	DWORD* pExpOrd =
-		(DWORD*)(dwExpOrdTabOfs + (DWORD)m_pDosHdr);
+	WORD* pExpOrd =
+		(WORD*)(dwExpOrdTabOfs + (DWORD)m_pDosHdr);
 
 	// 遍历所有的函数地址
 	m_vecExportFunInfo.clear();
@@ -197,6 +222,8 @@ void CLordPe::ExportTable()
 		m_vecExportFunInfo.push_back(exportFunInfo);
 	}
 }
+
+
 
 //RVA转文件偏移
 DWORD CLordPe::RVAToOffset(IMAGE_DOS_HEADER* pDos,

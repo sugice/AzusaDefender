@@ -6,6 +6,7 @@
 #include "ExportTable.h"
 #include "afxdialogex.h"
 #include "LordPe.h"
+#include "DiaPe.h"
 
 
 // CExportTable 对话框
@@ -55,15 +56,40 @@ BOOL CExportTable::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	// 初始化list信息
+	// 显示基础信息
+	CLordPe lordPe(CDiaPe::m_strFilePath);
+	lordPe.ExportTable();
+	m_strEdit = lordPe.m_my_im_ex_di.name;
+	m_strEdit2.Format(L"%08X", lordPe.m_my_im_ex_di.Base);
+	m_strEdit3.Format(L"%08X", lordPe.m_my_im_ex_di.NumberOfFunctions);
+	m_strEdit4.Format(L"%08X", lordPe.m_my_im_ex_di.NumberOfNames);
+	m_strEdit5.Format(L"%08X", lordPe.m_my_im_ex_di.AddressOfFunctions);
+	m_strEdit6.Format(L"%08X", lordPe.m_my_im_ex_di.AddressOfNames);
+	m_strEdit7.Format(L"%08X", lordPe.m_my_im_ex_di.AddressOfNameOrdinals);
+	UpdateData(FALSE);
+	
+	//初始化listCtrl
 	m_ctrlList.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
-	TCHAR *szCol[4] = { L"导出序号", L"RVA", L"偏移", L"函数名"};
+	TCHAR *szCol[4] = { L"导出序号", L"RVA", L"偏移", L"函数名" };
 	for (int i = 0; i < 4; ++i)
 	{
 		m_ctrlList.InsertColumn(i, szCol[i], 0, 100);
 	}
-	CLordPe lordPe;
-	/////////////////更改一下解析的函数/////////////////////
+	//插入item
+	m_ctrlList.DeleteAllItems();
+	DWORD i = 0;
+	for (EXPORTFUNINFO &exportFunInfo : lordPe.m_vecExportFunInfo)
+	{
+		CString temp;
+		temp.Format(L"%08X", exportFunInfo.ExportOrdinals);
+		m_ctrlList.InsertItem(i, temp);
+		temp.Format(L"%08X", exportFunInfo.FunctionRVA);
+		m_ctrlList.SetItemText(i, 1, temp);
+		temp.Format(L"%08X", exportFunInfo.FunctionOffset);
+		m_ctrlList.SetItemText(i, 2, temp);
+		m_ctrlList.SetItemText(i, 3, exportFunInfo.FunctionName);
+		++i;
+	}
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
