@@ -11,6 +11,9 @@ typedef struct _SOFTINFO
 	WCHAR UniPath[MAX_PATH];//Ð¶ÔØÂ·¾¶
 }SOFTINFO,*PSOFTINFO;
 
+
+
+
 class CUninstall : public CDialogEx
 {
 	DECLARE_DYNAMIC(CUninstall)
@@ -31,7 +34,9 @@ protected:
 public:
 	vector<SOFTINFO> m_vecSoftInfo;
 	BOOL GetSoftInfo(HKEY& rootKey,LPCTSTR lpSubKey,HKEY& hkResult);
+	BOOL GetRunInfo(HKEY& rootKey, LPCTSTR lpSubKey, HKEY& hkResult);
 	virtual BOOL OnInitDialog();
 	CListCtrl m_ctrlList;
 	afx_msg void OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult);
+
 };

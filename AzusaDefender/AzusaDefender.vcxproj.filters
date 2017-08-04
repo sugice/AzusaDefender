@@ -141,6 +141,9 @@
     <ClInclude Include="Uninstall.h">
       <Filter>软件卸载</Filter>
     </ClInclude>
+    <ClInclude Include="RunInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp">
@@ -205,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="Uninstall.cpp">
       <Filter>软件卸载</Filter>
+    </ClCompile>
+    <ClCompile Include="RunInfo.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,7 @@
 #include "Rocket.h"
 #include "PowrProf.h"
 #include "Uninstall.h"
+#include "RunInfo.h"
 #pragma comment(lib,"PowrProf.lib")
 
 
@@ -62,6 +63,7 @@ BEGIN_MESSAGE_MAP(CDiaA, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON9, &CDiaA::OnBnClickedButton9)
 	ON_BN_CLICKED(IDC_BUTTON10, &CDiaA::OnBnClickedButton10)
 	ON_BN_CLICKED(IDC_BUTTON11, &CDiaA::OnBnClickedButton11)
+	ON_BN_CLICKED(IDC_BUTTON12, &CDiaA::OnBnClickedButton12)
 END_MESSAGE_MAP()
 
 
@@ -378,6 +380,15 @@ void CDiaA::OnBnClickedButton11()
 }
 
 
+void CDiaA::OnBnClickedButton12()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CRunInfo* runInfo = new CRunInfo;
+	runInfo->Create(IDD_DIALOG15, this);
+	runInfo->ShowWindow(SW_SHOW);
+}
+
+
 //#pragma region 功能实现  
 BOOL CDiaA::ReSetWindows(DWORD dwFlags, BOOL bForce)
 {
@@ -455,6 +466,8 @@ void CDiaA::OnBnClickedButton10()
 	EnableShutDownPriv();
 	SetSuspendState(TRUE, FALSE, FALSE);//休眠
 }
+
+
 
 
 
