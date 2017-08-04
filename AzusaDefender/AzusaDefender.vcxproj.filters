@@ -132,6 +132,9 @@
     <ClInclude Include="TlsTable.h">
       <Filter>解析PE\TLS表</Filter>
     </ClInclude>
+    <ClInclude Include="Rocket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp">
@@ -191,6 +194,9 @@
     <ClCompile Include="TlsTable.cpp">
       <Filter>解析PE\TLS表</Filter>
     </ClCompile>
+    <ClCompile Include="Rocket.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AzusaDefender.rc">
@@ -204,6 +210,30 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\AzusaDefender.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="C:\Users\aimomo\Desktop\taitai.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="C:\Users\aimomo\Desktop\xiaodianshi.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="C:\Users\aimomo\Desktop\233333.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="C:\Users\aimomo\Desktop\123.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\bitmap1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\123.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\2333.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\233.bmp">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

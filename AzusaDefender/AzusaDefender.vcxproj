@@ -204,6 +204,7 @@
     <ClInclude Include="ReLoTable.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceTable.h" />
+    <ClInclude Include="Rocket.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TlsTable.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="MyTabCtrl.cpp" />
     <ClCompile Include="ReLoTable.cpp" />
     <ClCompile Include="ResourceTable.cpp" />
+    <ClCompile Include="Rocket.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -241,7 +243,15 @@
     <None Include="res\AzusaDefender.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="C:\Users\aimomo\Desktop\123.bmp" />
+    <Image Include="C:\Users\aimomo\Desktop\233333.bmp" />
+    <Image Include="C:\Users\aimomo\Desktop\taitai.bmp" />
+    <Image Include="C:\Users\aimomo\Desktop\xiaodianshi.bmp" />
+    <Image Include="res\123.bmp" />
+    <Image Include="res\233.bmp" />
+    <Image Include="res\2333.bmp" />
     <Image Include="res\AzusaDefender.ico" />
+    <Image Include="res\bitmap1.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

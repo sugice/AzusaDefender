@@ -8,6 +8,7 @@
 #include <Psapi.h>
 #include "DiaVs.h"
 #include "DiaPe.h"
+#include "Rocket.h"
 
 
 // CDiaA 对话框
@@ -80,6 +81,12 @@ BOOL CDiaA::OnInitDialog()
 	m_ctrlStatic2.SetWindowTextW(strStatic2);
 	//创建线程来实习检测CPU和内存的使用状态
 	CreateMonitorThread();
+
+	//显示小电视
+	CRocket* rocket = new CRocket();
+	rocket->Create(IDD_DIALOG13, this);
+	rocket->m_hParent = this->m_hWnd;
+	rocket->ShowWindow(SW_SHOW);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -351,3 +358,12 @@ void CDiaA::OnBnClickedButton5()
 	diaPe->Create(IDD_DIALOG6, this);
 	diaPe->ShowWindow(SW_SHOW);
 }
+
+
+//void CDiaA::OnBnClickedButton6()
+//{
+//	// TODO: 在此添加控件通知处理程序代码
+//	CRocket* rocket = new CRocket;
+//	rocket->Create(IDD_DIALOG13, this);
+//	rocket->ShowWindow(SW_SHOW);
+//}

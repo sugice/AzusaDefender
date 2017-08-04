@@ -2,6 +2,7 @@
 #include "afxcmn.h"
 #include "afxwin.h"
 #include <vector>
+
 using std::vector;
 
 
@@ -51,6 +52,8 @@ public:
 	BOOL m_isCheck;
 	BOOL m_isCheck2;
 	BOOL m_isCheck3;
+	HWND hWnd = this->m_hWnd;
 	afx_msg void OnBnClickedButton4();
 	afx_msg void OnBnClickedButton5();
+//	afx_msg void OnBnClickedButton6();
 };
