@@ -67,6 +67,12 @@
     <Filter Include="软件卸载">
       <UniqueIdentifier>{642f898b-ddc7-4d12-afae-7481e1edaf90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="小火箭">
+      <UniqueIdentifier>{1a522bbd-cd53-408e-8a6b-3b73184c2bd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="启动项">
+      <UniqueIdentifier>{0afc3ae9-b855-4335-ba29-6c5a739d310f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -135,14 +141,14 @@
     <ClInclude Include="TlsTable.h">
       <Filter>解析PE\TLS表</Filter>
     </ClInclude>
-    <ClInclude Include="Rocket.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Uninstall.h">
       <Filter>软件卸载</Filter>
     </ClInclude>
+    <ClInclude Include="Rocket.h">
+      <Filter>小火箭</Filter>
+    </ClInclude>
     <ClInclude Include="RunInfo.h">
-      <Filter>头文件</Filter>
+      <Filter>启动项</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -203,14 +209,14 @@
     <ClCompile Include="TlsTable.cpp">
       <Filter>解析PE\TLS表</Filter>
     </ClCompile>
-    <ClCompile Include="Rocket.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Uninstall.cpp">
       <Filter>软件卸载</Filter>
     </ClCompile>
+    <ClCompile Include="Rocket.cpp">
+      <Filter>小火箭</Filter>
+    </ClCompile>
     <ClCompile Include="RunInfo.cpp">
-      <Filter>源文件</Filter>
+      <Filter>启动项</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
