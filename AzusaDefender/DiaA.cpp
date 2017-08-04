@@ -10,6 +10,7 @@
 #include "DiaPe.h"
 #include "Rocket.h"
 #include "PowrProf.h"
+#include "Uninstall.h"
 #pragma comment(lib,"PowrProf.lib")
 
 
@@ -60,6 +61,7 @@ BEGIN_MESSAGE_MAP(CDiaA, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON8, &CDiaA::OnBnClickedButton8)
 	ON_BN_CLICKED(IDC_BUTTON9, &CDiaA::OnBnClickedButton9)
 	ON_BN_CLICKED(IDC_BUTTON10, &CDiaA::OnBnClickedButton10)
+	ON_BN_CLICKED(IDC_BUTTON11, &CDiaA::OnBnClickedButton11)
 END_MESSAGE_MAP()
 
 
@@ -366,7 +368,14 @@ void CDiaA::OnBnClickedButton5()
 	diaPe->ShowWindow(SW_SHOW);
 }
 
-
+//弹出卸载软件窗口
+void CDiaA::OnBnClickedButton11()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CUninstall* unistall = new CUninstall;
+	unistall->Create(IDD_DIALOG14, this);
+	unistall->ShowWindow(SW_SHOW);
+}
 
 
 //#pragma region 功能实现  
@@ -446,3 +455,6 @@ void CDiaA::OnBnClickedButton10()
 	EnableShutDownPriv();
 	SetSuspendState(TRUE, FALSE, FALSE);//休眠
 }
+
+
+

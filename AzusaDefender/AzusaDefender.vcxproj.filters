@@ -64,6 +64,9 @@
     <Filter Include="解析PE\TLS表">
       <UniqueIdentifier>{450fa45f-3f18-4d85-9a78-2c0b06179a17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="软件卸载">
+      <UniqueIdentifier>{642f898b-ddc7-4d12-afae-7481e1edaf90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -135,6 +138,9 @@
     <ClInclude Include="Rocket.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Uninstall.h">
+      <Filter>软件卸载</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp">
@@ -196,6 +202,9 @@
     </ClCompile>
     <ClCompile Include="Rocket.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Uninstall.cpp">
+      <Filter>软件卸载</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
