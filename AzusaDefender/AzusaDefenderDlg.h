@@ -34,4 +34,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CMyTabCtrl m_ctrlTab;
+	BOOL m_IsWindowHide;
+//	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2);
 };

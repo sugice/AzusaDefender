@@ -56,4 +56,9 @@ public:
 	afx_msg void OnBnClickedButton4();
 	afx_msg void OnBnClickedButton5();
 //	afx_msg void OnBnClickedButton6();
+	afx_msg void OnBnClickedButton6();
+	BOOL ReSetWindows(DWORD dwFlags, BOOL bForce);
+	BOOL EnableShutDownPriv();
+	afx_msg void OnBnClickedButton7();
+	afx_msg void OnBnClickedButton8();
 };

@@ -56,7 +56,8 @@ END_MESSAGE_MAP()
 
 
 CAzusaDefenderDlg::CAzusaDefenderDlg(CWnd* pParent /*=NULL*/)
-	: CDialogEx(IDD_AZUSADEFENDER_DIALOG, pParent)
+	: CDialogEx(IDD_AZUSADEFENDER_DIALOG, pParent),
+	m_IsWindowHide(TRUE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -71,6 +72,7 @@ BEGIN_MESSAGE_MAP(CAzusaDefenderDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_WM_HOTKEY()
 END_MESSAGE_MAP()
 
 
@@ -133,6 +135,10 @@ BOOL CAzusaDefenderDlg::OnInitDialog()
 	m_ctrlTab.m_Dia[1]->ShowWindow(SW_HIDE);
 	m_ctrlTab.m_Dia[2]->ShowWindow(SW_HIDE);
 	m_ctrlTab.m_Dia[3]->ShowWindow(SW_HIDE);
+
+	//注册热键
+	::RegisterHotKey(this->GetSafeHwnd(), 0Xa001, MOD_CONTROL | MOD_SHIFT | MOD_ALT, 'k');
+	::RegisterHotKey(this->GetSafeHwnd(), 0Xa001, MOD_CONTROL | MOD_SHIFT | MOD_ALT, 'K');
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -183,4 +189,30 @@ void CAzusaDefenderDlg::OnPaint()
 HCURSOR CAzusaDefenderDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
+}
+
+
+
+void CAzusaDefenderDlg::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	switch (nHotKeyId)
+	{
+	case 0xa001:
+		if (m_IsWindowHide)
+		{
+			ShowWindow(SW_HIDE);
+			m_IsWindowHide = FALSE;
+		}
+		//显示窗口的代码
+		else
+		{
+			ShowWindow(SW_SHOW);
+			m_IsWindowHide = TRUE;
+		}
+		break;
+	default:
+		break;
+	}
+	CDialogEx::OnHotKey(nHotKeyId, nKey1, nKey2);
 }

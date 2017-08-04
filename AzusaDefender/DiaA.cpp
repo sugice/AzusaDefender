@@ -53,6 +53,9 @@ BEGIN_MESSAGE_MAP(CDiaA, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON3, &CDiaA::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CDiaA::OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_BUTTON5, &CDiaA::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON6, &CDiaA::OnBnClickedButton6)
+	ON_BN_CLICKED(IDC_BUTTON7, &CDiaA::OnBnClickedButton7)
+	ON_BN_CLICKED(IDC_BUTTON8, &CDiaA::OnBnClickedButton8)
 END_MESSAGE_MAP()
 
 
@@ -360,10 +363,66 @@ void CDiaA::OnBnClickedButton5()
 }
 
 
-//void CDiaA::OnBnClickedButton6()
-//{
-//	// TODO: 在此添加控件通知处理程序代码
-//	CRocket* rocket = new CRocket;
-//	rocket->Create(IDD_DIALOG13, this);
-//	rocket->ShowWindow(SW_SHOW);
-//}
+
+
+//#pragma region 功能实现  
+BOOL CDiaA::ReSetWindows(DWORD dwFlags, BOOL bForce)
+{
+	//检查参数是否正确  
+	if (dwFlags != EWX_LOGOFF&&dwFlags != EWX_REBOOT&&dwFlags != EWX_SHUTDOWN)
+		return FALSE;
+	EnableShutDownPriv();
+	//判断是否是强制关机，强制关闭系统进程。  
+	dwFlags |= (bForce != FALSE) ? EWX_FORCE : EWX_FORCEIFHUNG;
+	//调用API  
+	return ExitWindowsEx(dwFlags, 0);
+}
+
+//#pragma region 用来提升系统权限  
+//这是一个通用的提升权限函数，如果需要提升其他权限  
+//更改LookupPrivilegeValue的第二个参数SE_SHUTDOWN_NAME，即可  
+BOOL CDiaA::EnableShutDownPriv()
+{
+	HANDLE hToken = NULL;
+	TOKEN_PRIVILEGES tkp = { 0 };
+	//打开当前程序的权限令牌  
+	if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
+	{
+		return FALSE;
+	}
+	//获得某一特定权限的权限标识LUID，保存在tkp中  
+	if (!LookupPrivilegeValue(NULL, SE_SHUTDOWN_NAME, &tkp.Privileges[0].Luid))
+	{
+		CloseHandle(hToken);
+		return FALSE;
+	}
+	tkp.PrivilegeCount = 1;
+	tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+	//调用AdjustTokenPrivileges来提升我们需要的系统权限  
+	if (!AdjustTokenPrivileges(hToken, FALSE, &tkp, sizeof(TOKEN_PRIVILEGES), NULL, NULL))
+	{
+		CloseHandle(hToken);
+		return FALSE;
+	}
+	return TRUE;
+}
+
+void CDiaA::OnBnClickedButton6()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	ReSetWindows(EWX_SHUTDOWN, true);//关机  
+}
+
+
+void CDiaA::OnBnClickedButton7()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	ReSetWindows(EWX_REBOOT, true);//重启  
+}
+
+
+void CDiaA::OnBnClickedButton8()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	ReSetWindows(EWX_LOGOFF, false);//注销  
+}
