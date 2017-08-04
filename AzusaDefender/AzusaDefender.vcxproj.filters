@@ -61,6 +61,9 @@
     <Filter Include="解析PE\延迟导入表">
       <UniqueIdentifier>{681459c3-0f30-4e8f-b3aa-8006ec4f1a18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="解析PE\TLS表">
+      <UniqueIdentifier>{450fa45f-3f18-4d85-9a78-2c0b06179a17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -127,7 +130,7 @@
       <Filter>解析PE\延迟导入表</Filter>
     </ClInclude>
     <ClInclude Include="TlsTable.h">
-      <Filter>头文件</Filter>
+      <Filter>解析PE\TLS表</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -186,7 +189,7 @@
       <Filter>解析PE\延迟导入表</Filter>
     </ClCompile>
     <ClCompile Include="TlsTable.cpp">
-      <Filter>源文件</Filter>
+      <Filter>解析PE\TLS表</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
