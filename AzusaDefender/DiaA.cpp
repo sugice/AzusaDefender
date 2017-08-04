@@ -9,6 +9,8 @@
 #include "DiaVs.h"
 #include "DiaPe.h"
 #include "Rocket.h"
+#include "PowrProf.h"
+#pragma comment(lib,"PowrProf.lib")
 
 
 // CDiaA 对话框
@@ -56,6 +58,8 @@ BEGIN_MESSAGE_MAP(CDiaA, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON6, &CDiaA::OnBnClickedButton6)
 	ON_BN_CLICKED(IDC_BUTTON7, &CDiaA::OnBnClickedButton7)
 	ON_BN_CLICKED(IDC_BUTTON8, &CDiaA::OnBnClickedButton8)
+	ON_BN_CLICKED(IDC_BUTTON9, &CDiaA::OnBnClickedButton9)
+	ON_BN_CLICKED(IDC_BUTTON10, &CDiaA::OnBnClickedButton10)
 END_MESSAGE_MAP()
 
 
@@ -425,4 +429,20 @@ void CDiaA::OnBnClickedButton8()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	ReSetWindows(EWX_LOGOFF, false);//注销  
+}
+
+
+void CDiaA::OnBnClickedButton9()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	EnableShutDownPriv();
+	SetSuspendState(FALSE, FALSE, FALSE);//睡眠
+}
+
+
+void CDiaA::OnBnClickedButton10()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	EnableShutDownPriv();
+	SetSuspendState(TRUE, FALSE, FALSE);//休眠
 }
