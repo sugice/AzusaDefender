@@ -125,6 +125,7 @@ public:
 	void ResourceTable();
 	void ReLoTable();
 	void parseResourcesTable(DWORD dwResRootDirAddr, IMAGE_RESOURCE_DIRECTORY* pResDir, int nDeep);
+	void DelayLoadTable();
 	BOOL GetDosHead(CString& filePath);
 	DWORD RVAToOffset(IMAGE_DOS_HEADER* pDos, DWORD dwRva);
 	void FindSectionName(IMAGE_DOS_HEADER* pDos, DWORD dwRva,CString& temp);

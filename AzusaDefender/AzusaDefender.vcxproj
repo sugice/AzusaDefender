@@ -188,6 +188,7 @@
   <ItemGroup>
     <ClInclude Include="AzusaDefender.h" />
     <ClInclude Include="AzusaDefenderDlg.h" />
+    <ClInclude Include="DelayLoTable.h" />
     <ClInclude Include="DiaA.h" />
     <ClInclude Include="DiaB.h" />
     <ClInclude Include="DiaC.h" />
@@ -209,6 +210,7 @@
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp" />
     <ClCompile Include="AzusaDefenderDlg.cpp" />
+    <ClCompile Include="DelayLoTable.cpp" />
     <ClCompile Include="DiaA.cpp" />
     <ClCompile Include="DiaB.cpp" />
     <ClCompile Include="DiaC.cpp" />

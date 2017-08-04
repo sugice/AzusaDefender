@@ -120,6 +120,9 @@
     <ClInclude Include="ReLoTable.h">
       <Filter>解析PE\重定位表</Filter>
     </ClInclude>
+    <ClInclude Include="DelayLoTable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AzusaDefender.cpp">
@@ -172,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="ReLoTable.cpp">
       <Filter>解析PE\重定位表</Filter>
+    </ClCompile>
+    <ClCompile Include="DelayLoTable.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

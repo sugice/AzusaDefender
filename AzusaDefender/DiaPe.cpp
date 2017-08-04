@@ -10,6 +10,7 @@
 #include "ImportTable.h"
 #include "ResourceTable.h"
 #include "ReLoTable.h"
+#include "DelayLoTable.h"
 
 // CDiaPe 对话框
 
@@ -71,6 +72,7 @@ BEGIN_MESSAGE_MAP(CDiaPe, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON3, &CDiaPe::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CDiaPe::OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_BUTTON6, &CDiaPe::OnBnClickedButton6)
+	ON_BN_CLICKED(IDC_BUTTON7, &CDiaPe::OnBnClickedButton7)
 END_MESSAGE_MAP()
 
 
@@ -219,4 +221,13 @@ void CDiaPe::OnBnClickedButton6()
 	CReLoTable* reLoTable = new CReLoTable;
 	reLoTable->Create(IDD_DIALOG10, this);
 	reLoTable->ShowWindow(SW_SHOW);
+}
+
+
+void CDiaPe::OnBnClickedButton7()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CDelayLoTable* delayLoTable = new CDelayLoTable;
+	delayLoTable->Create(IDD_DIALOG11, this);
+	delayLoTable->ShowWindow(SW_SHOW);
 }
