@@ -58,6 +58,9 @@
     <Filter Include="解析PE\重定位表">
       <UniqueIdentifier>{034a022b-2cdb-4edd-8bfa-f6d88adb84f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="解析PE\延迟导入表">
+      <UniqueIdentifier>{681459c3-0f30-4e8f-b3aa-8006ec4f1a18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -121,6 +124,9 @@
       <Filter>解析PE\重定位表</Filter>
     </ClInclude>
     <ClInclude Include="DelayLoTable.h">
+      <Filter>解析PE\延迟导入表</Filter>
+    </ClInclude>
+    <ClInclude Include="TlsTable.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -177,6 +183,9 @@
       <Filter>解析PE\重定位表</Filter>
     </ClCompile>
     <ClCompile Include="DelayLoTable.cpp">
+      <Filter>解析PE\延迟导入表</Filter>
+    </ClCompile>
+    <ClCompile Include="TlsTable.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

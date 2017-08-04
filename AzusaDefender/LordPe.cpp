@@ -621,6 +621,34 @@ void CLordPe::DelayLoadTable()
 	}
 }
 
+//TLS表
+void CLordPe::TLSTable()
+{
+	// nt头,包含这文件头和扩展头
+	IMAGE_NT_HEADERS* pNtHdr;
+	pNtHdr = (IMAGE_NT_HEADERS*)(m_pDosHdr->e_lfanew + (DWORD)m_pDosHdr);
+
+	IMAGE_OPTIONAL_HEADER* pOptHdr;// 扩展头
+	pOptHdr = &(pNtHdr->OptionalHeader);
+
+	//数据目录表
+	PIMAGE_DATA_DIRECTORY pDataDirectory = pOptHdr->DataDirectory;
+
+	// 5. 找到延迟加载表
+	// 5. 得到延迟加载表的RVA
+	DWORD dwTLSRva = pDataDirectory[9].VirtualAddress;
+
+	IMAGE_TLS_DIRECTORY32* pTLSArray;
+
+	pTLSArray = (IMAGE_TLS_DIRECTORY32*)(RVAToOffset(m_pDosHdr, dwTLSRva) + (DWORD)m_pDosHdr);
+	m_tlsInfo.StartAddressOfRawData = pTLSArray->StartAddressOfRawData;
+	m_tlsInfo.EndAddressOfRawData = pTLSArray->EndAddressOfRawData;
+	m_tlsInfo.AddressOfIndex = pTLSArray->AddressOfIndex;
+	m_tlsInfo.AddressOfCallBacks = pTLSArray->AddressOfCallBacks;
+	m_tlsInfo.SizeOfZeroFill = pTLSArray->SizeOfZeroFill;
+	m_tlsInfo.Characteristics = pTLSArray->Characteristics;
+
+}
 
 //RVA转文件偏移
 DWORD CLordPe::RVAToOffset(IMAGE_DOS_HEADER* pDos,

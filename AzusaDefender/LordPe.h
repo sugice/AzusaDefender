@@ -112,6 +112,18 @@ typedef struct _RELOCAREAINFO
 	std::vector<RELOCINFO> vecRelocInfo;
 }RELOCAREINFO, *PRELOCAREINFO;
 
+
+typedef struct _MYTLSINFO
+{
+	DWORD   StartAddressOfRawData;//数据块开始VA
+	DWORD   EndAddressOfRawData;//数据块结束VA
+	DWORD   AddressOfIndex;//索引变量VA
+	DWORD   AddressOfCallBacks;//回调表VA
+	DWORD   SizeOfZeroFill;//填零大小
+	DWORD	Characteristics;//特征值
+}MYTLSINFO,*PMYTLSINFO;
+
+
 class CLordPe
 {
 public:
@@ -126,6 +138,7 @@ public:
 	void ReLoTable();
 	void parseResourcesTable(DWORD dwResRootDirAddr, IMAGE_RESOURCE_DIRECTORY* pResDir, int nDeep);
 	void DelayLoadTable();
+	void TLSTable();
 	BOOL GetDosHead(CString& filePath);
 	DWORD RVAToOffset(IMAGE_DOS_HEADER* pDos, DWORD dwRva);
 	void FindSectionName(IMAGE_DOS_HEADER* pDos, DWORD dwRva,CString& temp);
@@ -153,5 +166,8 @@ public:
 
 	//---------------重定位表---------------------//
 	vector<RELOCAREINFO> m_vecReloInfo;
+
+	//---------------TLS表---------------------//
+	MYTLSINFO m_tlsInfo;
 };
 

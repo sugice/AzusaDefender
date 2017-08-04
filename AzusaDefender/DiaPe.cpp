@@ -11,6 +11,7 @@
 #include "ResourceTable.h"
 #include "ReLoTable.h"
 #include "DelayLoTable.h"
+#include "TlsTable.h"
 
 // CDiaPe 对话框
 
@@ -73,6 +74,7 @@ BEGIN_MESSAGE_MAP(CDiaPe, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON4, &CDiaPe::OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_BUTTON6, &CDiaPe::OnBnClickedButton6)
 	ON_BN_CLICKED(IDC_BUTTON7, &CDiaPe::OnBnClickedButton7)
+	ON_BN_CLICKED(IDC_BUTTON8, &CDiaPe::OnBnClickedButton8)
 END_MESSAGE_MAP()
 
 
@@ -230,4 +232,13 @@ void CDiaPe::OnBnClickedButton7()
 	CDelayLoTable* delayLoTable = new CDelayLoTable;
 	delayLoTable->Create(IDD_DIALOG11, this);
 	delayLoTable->ShowWindow(SW_SHOW);
+}
+
+
+void CDiaPe::OnBnClickedButton8()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CTlsTable* tlsTable = new CTlsTable;
+	tlsTable->Create(IDD_DIALOG12, this);
+	tlsTable->ShowWindow(SW_SHOW);
 }
